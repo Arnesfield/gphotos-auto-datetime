@@ -1,4 +1,3 @@
-import { ID } from '../constants.js';
 import { NormalizeDateOptions, ParsedDate } from '../types.js';
 import { padTime } from '../utils/pad-time.js';
 
@@ -12,10 +11,7 @@ function parseHour(hour24: number) {
 
 function normalizeDate(options: NormalizeDateOptions): ParsedDate | undefined {
   const parsedHour = parseHour(Number(options.hour24));
-  if (parsedHour == null) {
-    console.error('[%s] Invalid hour: %o', ID, options.hour24);
-    return;
-  }
+  if (parsedHour == null) return;
 
   const { hour, ampm } = parsedHour;
   const { year, month, day, minute, second } = options;

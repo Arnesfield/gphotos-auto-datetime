@@ -22,7 +22,7 @@ async function run() {
 
   const result = { success: 0, skipped: 0 };
 
-  while (!stop) {
+  for (let nth = 1; !stop; nth++) {
     await delay(400, 800);
 
     let retry = false;
@@ -35,13 +35,13 @@ async function run() {
     const nameDiv = nameItemDiv?.querySelector('dd > div');
     const name = nameDiv?.textContent;
     if (!name) {
-      console.error('[%s] Unable to find the file name.', ID);
+      console.error('[%s] [%o] Unable to find the file name.', ID, nth);
       break;
     }
 
     const parsedDate = parseDate(name);
     if (!parsedDate) {
-      console.error('[%s] Unable to parse name: %o', ID, name);
+      console.error('[%s] [%o] Unable to parse name: %o', ID, nth, name);
       break;
     }
 
@@ -50,7 +50,11 @@ async function run() {
       | null
       | undefined;
     if (!datetimeDiv) {
-      console.error("[%s] Unable to find 'Date and time' details.", ID);
+      console.error(
+        "[%s] [%o] Unable to find 'Date and time' details.",
+        ID,
+        nth
+      );
       break;
     }
 
@@ -60,15 +64,20 @@ async function run() {
       // get dialog
       const dialogDiv = document.querySelector('div[data-back-to-cancel]');
       if (!dialogDiv) {
-        console.error("[%s] Unable to find 'Edit Date & Time' dialog.", ID);
+        console.error(
+          "[%s] [%o] Unable to find 'Edit Date & Time' dialog.",
+          ID,
+          nth
+        );
         break;
       }
 
       const dateInputs = dialogDiv.querySelectorAll<HTMLInputElement>('input');
       if (dateInputs.length !== 6) {
         console.error(
-          "[%s] Unable to find 'Edit Date & Time' dialog fields.",
-          ID
+          "[%s] [%o] Unable to find 'Edit Date & Time' dialog fields.",
+          ID,
+          nth
         );
         break;
       }
@@ -84,8 +93,9 @@ async function run() {
 
       if (!saveButtonEl) {
         console.error(
-          "[%s] Unable to find the 'Save' dialog action button.",
-          ID
+          "[%s] [%o] Unable to find the 'Save' dialog action button.",
+          ID,
+          nth
         );
         break;
       }
@@ -93,8 +103,9 @@ async function run() {
       if (!dryRun) {
         saveButtonEl.click();
         console.log(
-          '[%s] Saved datetime for %o. Parsed: %o',
+          '[%s] [%o] Saved datetime for %o. Parsed: %o',
           ID,
+          nth,
           name,
           parsedDate
         );
@@ -111,16 +122,18 @@ async function run() {
         const cancelButtonEl = buttons[0];
         cancelButtonEl?.click();
         console.warn(
-          '[%s] Dry run mode. Edit cancelled for %o. Parsed: %o',
+          '[%s] [%o] Dry run mode. Edit cancelled for %o. Parsed: %o',
           ID,
+          nth,
           name,
           parsedDate
         );
       }
     } else {
       console.log(
-        '[%s] Photo %o already has the correct date and time. Skipping.',
+        '[%s] [%o] Photo %o already has the correct date and time. Skipping.',
         ID,
+        nth,
         name
       );
       result.skipped++;
@@ -132,8 +145,9 @@ async function run() {
 
     if (retry) {
       console.warn(
-        '[%s] Display date and time not updated for %o. Parsed: %o Display: %o',
+        '[%s] [%o] Display date and time not updated for %o. Parsed: %o Display: %o',
         ID,
+        nth,
         name,
         parsedDate,
         parseDisplayDate(datetimeDiv)
@@ -151,13 +165,18 @@ async function run() {
       );
 
     if (!nextButtonDiv) {
-      console.error("[%s] Unable to find the 'Next' photo button.", ID);
+      console.error(
+        "[%s] [%o] Unable to find the 'Next' photo button.",
+        ID,
+        nth
+      );
       break;
     }
     if (!isElementVisible(nextButtonDiv)) {
       console.warn(
-        "[%s] The 'Next' photo button is not visible (end of photos).",
-        ID
+        "[%s] [%o] The 'Next' photo button is not visible (end of photos).",
+        ID,
+        nth
       );
       break;
     }
