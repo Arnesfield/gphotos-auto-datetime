@@ -2,7 +2,7 @@
   "compilerOptions": {
     "allowJs": true,
     "esModuleInterop": true,
-    "lib": ["ESNext"],
+    "lib": ["ESNext", "DOM"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "noEmit": true,
@@ -20,5 +20,5 @@
     "eslint.config.mjs",
     "rollup.config.ts"
   ],
-  "exclude": ["node_modules", "/lib", "tmp", "fixtures"]
+  "exclude": ["node_modules", "/dist", "tmp", "fixtures"]
 }
