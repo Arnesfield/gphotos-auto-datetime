@@ -1,8 +1,8 @@
-import { ParsedDate } from '../types.js';
+import { AmPm, NormalizedDate } from '../types.js';
 import { cleanWhitespace } from '../utils/clean-whitespace.js';
 import { padTime } from '../utils/pad-time.js';
 
-export function parseDisplayDate(datetimeDiv: HTMLDivElement): ParsedDate {
+export function parseDisplayDate(datetimeDiv: HTMLDivElement): NormalizedDate {
   const [monthDayOptionalYear, dotwAndTime] = Array.from(
     datetimeDiv.querySelectorAll('dd [aria-label]')
   )
@@ -15,7 +15,7 @@ export function parseDisplayDate(datetimeDiv: HTMLDivElement): ParsedDate {
     : monthDayOptionalYear + ', ' + new Date().getFullYear();
 
   const time = cleanWhitespace(dotwAndTime).split(', ')[1];
-  const [mss, ampm] = time.split(' ');
+  const [mss, ampm] = time.split(' ') as [string, AmPm];
 
   const date = new Date(dateString);
   const month = padTime(date.getMonth() + 1);

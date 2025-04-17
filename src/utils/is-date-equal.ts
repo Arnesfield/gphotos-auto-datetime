@@ -1,8 +1,8 @@
-import { ParsedDate } from '../types.js';
+import { NormalizedDate } from '../types.js';
 
-export function isDateEqual(a: ParsedDate, b: ParsedDate): boolean {
+export function isDateEqual(a: NormalizedDate, b: NormalizedDate): boolean {
   // skip second check
-  const props: (keyof ParsedDate)[] = [
+  const props: (keyof NormalizedDate)[] = [
     'year',
     'month',
     'day',

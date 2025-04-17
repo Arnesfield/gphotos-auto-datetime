@@ -1,15 +1,8 @@
 import { NAME } from './constants.js';
 
-export interface AutoDatetime {
-  start(): Promise<void>;
-  stop(): Promise<void> | undefined;
-}
+export type MaybePromise<T> = T | Promise<T> | PromiseLike<T>;
 
-declare global {
-  interface Window {
-    [NAME]: AutoDatetime | undefined;
-  }
-}
+export type AmPm = 'AM' | 'PM';
 
 export interface BaseDate {
   year: string;
@@ -19,11 +12,38 @@ export interface BaseDate {
   second: string;
 }
 
-export interface NormalizeDateOptions extends BaseDate {
-  hour24: string;
+export interface ParsedDateHour12 extends BaseDate {
+  hour12: string;
+  hour24?: never;
+  ampm: AmPm;
 }
 
-export interface ParsedDate extends BaseDate {
+export interface ParsedDateHour24 extends BaseDate {
+  hour12?: never;
+  hour24: string;
+  ampm?: never;
+}
+
+export type ParsedDate = ParsedDateHour12 | ParsedDateHour24;
+
+export interface NormalizedDate extends BaseDate {
   hour: string;
-  ampm: string;
+  ampm: AmPm;
+}
+
+export interface Parser {
+  name: string;
+  parse(fileName: string): MaybePromise<ParsedDate | undefined>;
+}
+
+export interface AutoDatetime {
+  readonly parsers: readonly Parser[];
+  start(): Promise<void>;
+  stop(): Promise<void> | undefined;
+}
+
+declare global {
+  interface Window {
+    [NAME]: AutoDatetime | undefined;
+  }
 }

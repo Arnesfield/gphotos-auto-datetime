@@ -1,16 +1,27 @@
 import { ID, NAME } from '../constants.js';
-import { AutoDatetime } from '../types.js';
+import { AutoDatetime, NormalizedDate } from '../types.js';
 import { delay } from '../utils/delay.js';
 import { isDateEqual } from '../utils/is-date-equal.js';
 import { isElementVisible } from '../utils/is-element-visible.js';
+import { normalizeDate } from '../utils/normalize-date.js';
 import { inputDate } from './input-date.js';
-import { parseDate } from './parse-date.js';
 import { parseDisplayDate } from './parse-display-date.js';
+import { parsers } from './parsers.js';
 
 let stop = false;
 let running: Promise<void> | undefined;
 const dryRun = false;
 const single = false;
+
+async function parseDate(
+  fileName: string
+): Promise<NormalizedDate | undefined> {
+  if (!fileName) return;
+  for (const parser of parsers) {
+    const parsed = await parser.parse(fileName);
+    if (parsed) return normalizeDate(parsed);
+  }
+}
 
 async function run() {
   console.log(
@@ -39,7 +50,7 @@ async function run() {
       break;
     }
 
-    const parsedDate = parseDate(name);
+    const parsedDate = await parseDate(name);
     if (!parsedDate) {
       console.error('[%s] [%o] Unable to parse name: %o', ID, nth, name);
       break;
@@ -201,6 +212,7 @@ async function run() {
 }
 
 export const instance: AutoDatetime = {
+  parsers,
   start() {
     if (!running) {
       stop = false;
@@ -213,3 +225,10 @@ export const instance: AutoDatetime = {
     return running;
   }
 };
+
+Object.defineProperty(instance, 'parsers', {
+  value: parsers,
+  configurable: false,
+  enumerable: true,
+  writable: false
+});

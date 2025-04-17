@@ -1,8 +1,8 @@
-import { ParsedDate } from '../types.js';
+import { NormalizedDate } from '../types.js';
 import { delay } from '../utils/delay.js';
 
 export async function inputDate(
-  parsedDate: ParsedDate,
+  parsedDate: NormalizedDate,
   inputs: NodeListOf<HTMLInputElement>
 ): Promise<void> {
   // set data to fields
