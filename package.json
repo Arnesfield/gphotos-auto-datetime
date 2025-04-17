@@ -1,4 +1,21 @@
 {
+  "name": "gphotos-auto-datetime",
+  "version": "0.0.1-alpha.1",
+  "description": "Auto set date and time for Google Photos.",
+  "keywords": [
+    "google-photos",
+    "automation"
+  ],
+  "homepage": "https://github.com/Arnesfield/gphotos-auto-datetime#readme",
+  "bugs": {
+    "url": "https://github.com/Arnesfield/gphotos-auto-datetime/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Arnesfield/gphotos-auto-datetime.git"
+  },
+  "license": "MIT",
+  "author": "Jefferson Rylee <rylee.jeff385@gmail.com>",
   "sideEffects": false,
   "type": "module",
   "exports": {
