@@ -1,0 +1,31 @@
+#!/usr/bin/env sh
+
+if [ ! "$npm_package_version" ]; then
+  echo "error: Run script via 'npm run release' instead."
+  exit 1
+fi
+
+remote_url=$(git remote get-url origin)
+result=$?
+[ $result -ne 0 ] && exit $result
+
+cd dist || exit 1
+
+release_remote=release
+release_branch=release
+message="release $npm_package_version"
+
+# reinitialize git repository
+[ -d .git ] && rm -rf .git
+git init
+git remote add "$release_remote" "$remote_url"
+git checkout -b "$release_branch"
+git add ./*
+git status
+git commit -m "$message"
+git push -f "$release_remote" "$release_branch"
+
+result=$?
+[ $result -ne 0 ] && exit $result
+
+echo "done: $message"
