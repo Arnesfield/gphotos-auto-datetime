@@ -1,6 +1,7 @@
 {
   "name": "gphotos-auto-datetime",
   "version": "0.0.1-alpha.1",
+  "private": true,
   "description": "Auto set date and time for Google Photos.",
   "keywords": [
     "google-photos",
