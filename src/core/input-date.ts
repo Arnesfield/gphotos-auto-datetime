@@ -1,0 +1,48 @@
+import { ParsedDate } from '../types.js';
+import { delay } from '../utils/delay.js';
+
+export async function inputDate(
+  parsedDate: ParsedDate,
+  inputs: NodeListOf<HTMLInputElement>
+): Promise<void> {
+  // set data to fields
+  // create value list to ensure correct order
+  const valueList = [
+    parsedDate.year,
+    parsedDate.month,
+    parsedDate.day,
+    parsedDate.hour,
+    parsedDate.minute
+  ];
+
+  const opts: EventInit = { bubbles: true, cancelable: false, composed: true };
+
+  for (let index = 0; index < valueList.length; index++) {
+    const inputEl = inputs[index];
+    const value = valueList[index];
+
+    // if value is the same, skip it
+    if (inputEl.value === value) continue;
+
+    await delay(100, 300);
+
+    // mimic keyboard input
+    // NOTE: taken from https://stackoverflow.com/a/69286377/7013346
+    inputEl.click();
+    await delay(20);
+    inputEl.value = value;
+    await delay(20);
+    inputEl.dispatchEvent(new Event('input', opts));
+    await delay(20);
+    inputEl.dispatchEvent(new Event('blur', opts));
+
+    await delay(100, 300);
+  }
+
+  // clicking on ampm field will change it
+  const ampmInputEl = inputs[valueList.length];
+  if (ampmInputEl.value !== parsedDate.ampm) {
+    ampmInputEl.click();
+    await delay(100, 300);
+  }
+}
