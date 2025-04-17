@@ -1,36 +1,36 @@
-# template.ts
+# gphotos-auto-datetime
 
-TypeScript template repository.
+Google Photos automation script to set the date and time for photos based on the file name.
 
----
+File name conventions that are recognized by this script:
 
-Run initial setup:
+- `Screenshot from YYYY-MM-DD HH-MM-SS[-NTH].png`
+- `GAMEID_YYYYMMDDHHMMSS_NTH.png`
 
-```sh
-npm init
-```
+> [!CAUTION]
+>
+> **THIS WILL UPDATE DATE AND TIME OF PHOTOS BASED ON THE FILE NAME. USE WITH CAUTION.**
 
-Install dependencies:
+## Usage
 
-```sh
-npm install --save-dev \
-  @eslint/js \
-  @rollup/plugin-eslint @rollup/plugin-typescript @types/node \
-  concurrently eslint globals prettier rimraf rollup rollup-plugin-cleanup \
-  rollup-plugin-dts rollup-plugin-esbuild rollup-plugin-output-size \
-  tslib typescript typescript-eslint
-```
+1. Copy the script contents from [release/index.min.js](https://github.com/Arnesfield/gphotos-auto-datetime/raw/release/index.min.js).
 
-Install testing dependencies:
+   - (Linux) Run the following in your terminal:
 
-```sh
-npm install --save-dev \
-  @types/chai @types/mocha @types/sinon \
-  chai eslint-plugin-chai-friendly mocha sinon tsx
-```
+     ```sh
+     wget --no-cache -O - github.com/Arnesfield/gphotos-auto-datetime/raw/release/index.min.js | xclip -selection clipboard
+     ```
 
-Finally, sort `package.json` with [sort-package-json](https://www.npmjs.com/package/sort-package-json):
+2. Go to your Google Photos page (<https://photos.google.com>).
 
-```sh
-sort-package-json
-```
+3. Click on the first photo (from an album is also recommended).
+
+4. Open the browser developer console for that page.
+
+5. Paste and enter the script contents.
+
+6. Stop the script by closing the browser tab or entering `adt.stop()` on the console.
+
+## License
+
+Licensed under the [MIT License](LICENSE).
