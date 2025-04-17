@@ -20,25 +20,21 @@
   "sideEffects": false,
   "type": "module",
   "exports": {
-    ".": {
-      "types": "./lib/index.d.ts",
-      "import": "./lib/index.mjs",
-      "require": "./lib/index.cjs"
-    },
+    ".": "./dist/index.js",
     "./package.json": "./package.json"
   },
-  "main": "lib/index.cjs",
-  "jsdelivr": "lib/index.umd.min.js",
-  "unpkg": "lib/index.umd.min.js",
-  "module": "lib/index.mjs",
-  "types": "lib/index.d.ts",
+  "main": "dist/index.js",
+  "jsdelivr": "dist/index.min.js",
+  "unpkg": "dist/index.min.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
-    "lib"
+    "dist"
   ],
   "scripts": {
     "all": "concurrently -r --kill-others-on-fail",
     "build": "npm run all -- npm:bundle npm:check",
-    "prebundle": "rimraf lib",
+    "prebundle": "rimraf dist",
     "bundle": "rollup -c rollup.config.ts --configPlugin \"esbuild={target:'esnext'}\"",
     "check": "npm run all -- \"npm:lint -- --max-warnings 0\" tsc",
     "format": "npm run lint -- --fix && prettier -cw .",
