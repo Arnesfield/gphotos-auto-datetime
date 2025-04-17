@@ -1,24 +1,24 @@
 import _eslint from '@rollup/plugin-eslint';
 import _typescript from '@rollup/plugin-typescript';
-import { OutputOptions, RollupOptions } from 'rollup';
+import { PluginImpl, RollupOptions } from 'rollup';
 import cleanup from 'rollup-plugin-cleanup';
-import dts from 'rollup-plugin-dts';
-import esbuild, { Options as EsbuildOptions } from 'rollup-plugin-esbuild';
+import _esbuild, {
+  Options as RollupPluginEsbuildOptions
+} from 'rollup-plugin-esbuild';
 import outputSize from 'rollup-plugin-output-size';
 import pkg from './package.json' with { type: 'json' };
+import { NAME } from './src/constants.js';
 
 // NOTE: remove once import errors are fixed for their respective packages
+const esbuild = _esbuild as unknown as PluginImpl<RollupPluginEsbuildOptions>;
 const eslint = _eslint as unknown as typeof _eslint.default;
 const typescript = _typescript as unknown as typeof _typescript.default;
 
-// skip sourcemap and umd unless production
-const PROD = process.env.NODE_ENV !== 'development';
+// const PROD = process.env.NODE_ENV !== 'development';
 const WATCH = process.env.ROLLUP_WATCH === 'true';
-const name = pkg.name.slice(pkg.name.lastIndexOf('/') + 1);
 const input = 'src/index.ts';
-const inputUmd = 'src/index.umd.ts';
 
-function build(options: EsbuildOptions = {}) {
+function build(options: RollupPluginEsbuildOptions = {}) {
   return esbuild({ target: 'esnext', ...options });
 }
 
@@ -29,16 +29,6 @@ function clean() {
   });
 }
 
-function umd(options: Partial<OutputOptions>): OutputOptions {
-  return {
-    name,
-    format: 'umd',
-    exports: 'default',
-    sourcemap: PROD,
-    ...options
-  };
-}
-
 function defineConfig(options: (false | RollupOptions)[]) {
   return options.filter((options): options is RollupOptions => !!options);
 }
@@ -46,26 +36,13 @@ function defineConfig(options: (false | RollupOptions)[]) {
 export default defineConfig([
   {
     input,
-    output: [
-      { file: pkg.main, format: 'cjs', exports: 'named', sourcemap: PROD },
-      { file: pkg.module, format: 'esm', exports: 'named', sourcemap: PROD }
-    ],
+    output: { file: pkg.module, name: NAME, format: 'iife' },
     plugins: [build(), clean(), outputSize()]
-  },
-  PROD && {
-    input: inputUmd,
-    output: umd({ file: pkg.unpkg.replace(/\.min\.js$/, '.js') }),
-    plugins: [build(), clean(), outputSize()]
-  },
-  PROD && {
-    input: inputUmd,
-    output: umd({ file: pkg.unpkg }),
-    plugins: [build({ minify: true }), clean(), outputSize()]
   },
   {
     input,
-    output: { file: pkg.types, format: 'esm' },
-    plugins: [dts(), outputSize()]
+    output: { file: pkg.unpkg, name: NAME, format: 'iife' },
+    plugins: [build({ minify: true }), clean(), outputSize()]
   },
   WATCH && {
     input,
