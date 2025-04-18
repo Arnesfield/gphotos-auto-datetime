@@ -40,7 +40,6 @@ async function run() {
         attempts,
         MAX_RETRIES
       );
-      await delay(randomInt(1000, 2000));
       continue;
     }
 
@@ -57,7 +56,6 @@ async function run() {
         attempts,
         MAX_RETRIES
       );
-      await delay(randomInt(1000, 2000));
       continue;
     }
 
@@ -83,13 +81,11 @@ async function run() {
       );
 
       if (!retry()) break;
-      await delay(randomInt(1000, 2000));
       continue;
     }
 
     if (!next(logger)) break;
 
-    await delay(randomInt(500, 1000));
     nth++;
     attempts = 0;
   }
