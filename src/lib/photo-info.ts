@@ -1,6 +1,5 @@
 import { AmPm, NormalizedDate } from '../date/date.types.js';
 import { padTime } from '../date/pad-time.js';
-import { cleanWhitespace } from '../utils/clean-whitespace.js';
 import { isElementVisible } from '../utils/is-element-visible.js';
 
 const dateTakenSelector = 'dd [aria-label^="Date taken:"]';
@@ -29,7 +28,8 @@ export function parseInfoDate(info: PhotoInfo): NormalizedDate | undefined {
     ? dateTaken
     : dateTaken + ', ' + new Date().getFullYear();
 
-  const time = cleanWhitespace(timeTaken).split(', ')[1];
+  // clean whitespace
+  const time = timeTaken.replace(/\s/g, ' ').split(', ')[1];
   const [mss, ampm] = time.split(' ') as [string, AmPm];
 
   const date = new Date(dateString);
