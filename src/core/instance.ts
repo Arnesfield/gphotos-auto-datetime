@@ -96,7 +96,7 @@ async function input(options: {
         parsedDate
       );
 
-      await delay(500, 1000);
+      await delay(1000, 1500);
 
       // verify if correct date
       res.infoDate = parseInfoDate(info);
@@ -129,6 +129,7 @@ async function input(options: {
 
 async function run() {
   result = { success: 0, skipped: 0 };
+  let prevName: string | undefined;
 
   console.log(
     '[%s] Starting %o. Enter %o to stop and %o to check status.',
@@ -139,7 +140,7 @@ async function run() {
   );
 
   for (let nth = 1; !stop; nth++) {
-    await delay(400, 800);
+    await delay(500, 800);
 
     let retry = false;
 
@@ -150,10 +151,13 @@ async function run() {
       break;
     }
 
-    const { name } = info;
-    const parsedDate = await parse(name);
+    // somehow, the info panel was not updated yet
+    if (prevName === info.name) continue;
+    prevName = info.name;
+
+    const parsedDate = await parse(info.name);
     if (!parsedDate) {
-      console.error('[%s] [%o] Unable to parse name: %o', ID, nth, name);
+      console.error('[%s] [%o] Unable to parse name: %o', ID, nth, info.name);
       break;
     }
 
@@ -172,7 +176,7 @@ async function run() {
         '[%s] [%o] Photo date and time not updated for %o. Parsed: %o Details: %o',
         ID,
         nth,
-        name,
+        info.name,
         parsedDate,
         inputResult.infoDate
       );
