@@ -4,7 +4,6 @@ import { getPhotoInfo } from '../lib/photo-info.js';
 import { AutoDatetime, NormalizedDate, Result } from '../types.js';
 import { delay } from '../utils/delay.js';
 import { isNormalizedDate } from '../utils/is-normalized-date.js';
-import { randomInt } from '../utils/random-int.js';
 import { input } from './input.js';
 import { next, previous } from './navigation.js';
 import { parse, parsers } from './parsers.js';
@@ -26,7 +25,7 @@ async function run() {
   }
 
   while (!stop) {
-    await delay(randomInt(1000, 2000));
+    await delay(500, 1500);
 
     const info = getPhotoInfo();
     if (!info) {
