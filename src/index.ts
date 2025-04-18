@@ -1,6 +1,6 @@
+import { init } from './core/init.js';
 import { instance } from './core/instance.js';
-import { start } from './core/start.js';
 
-start();
+init();
 
 export default instance;
