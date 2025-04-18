@@ -28,11 +28,13 @@ File name conventions that are recognized by this script:
 
 3. Click on the first photo (from an album is also recommended).
 
-4. Open the browser developer console for that page.
+4. Click on the **Info** icon button to keep the info side panel open.
 
-5. Paste and enter the script contents.
+5. Open the browser developer console for that page.
 
-6. Stop the script by closing the browser tab or entering `adt.stop()` on the console.
+6. Paste and enter the script contents.
+
+7. Stop the script by closing the browser tab or entering `adt.stop()` on the console.
 
 ## License
 
