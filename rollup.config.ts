@@ -1,18 +1,14 @@
-import _eslint from '@rollup/plugin-eslint';
-import _typescript from '@rollup/plugin-typescript';
-import { PluginImpl, RollupOptions } from 'rollup';
+import eslint from '@rollup/plugin-eslint';
+import json from '@rollup/plugin-json';
+import typescript from '@rollup/plugin-typescript';
+import { RollupOptions } from 'rollup';
 import cleanup from 'rollup-plugin-cleanup';
-import _esbuild, {
+import esbuild, {
   Options as RollupPluginEsbuildOptions
 } from 'rollup-plugin-esbuild';
 import outputSize from 'rollup-plugin-output-size';
 import pkg from './package.json' with { type: 'json' };
 import { NAME } from './src/constants.js';
-
-// NOTE: remove once import errors are fixed for their respective packages
-const esbuild = _esbuild as unknown as PluginImpl<RollupPluginEsbuildOptions>;
-const eslint = _eslint as unknown as typeof _eslint.default;
-const typescript = _typescript as unknown as typeof _typescript.default;
 
 // const PROD = process.env.NODE_ENV !== 'development';
 const WATCH = process.env.ROLLUP_WATCH === 'true';
@@ -37,16 +33,16 @@ export default defineConfig([
   {
     input,
     output: { file: pkg.module, name: NAME, format: 'iife' },
-    plugins: [build(), clean(), outputSize()]
+    plugins: [build(), json(), clean(), outputSize()]
   },
   {
     input,
     output: { file: pkg.unpkg, name: NAME, format: 'iife' },
-    plugins: [build({ minify: true }), clean(), outputSize()]
+    plugins: [build({ minify: true }), json(), clean(), outputSize()]
   },
   WATCH && {
     input,
     watch: { skipWrite: true },
-    plugins: [eslint(), typescript()]
+    plugins: [eslint(), typescript(), json()]
   }
 ]);
