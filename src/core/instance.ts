@@ -139,7 +139,11 @@ async function run() {
     `${NAME}.status()`
   );
 
+  const totalRetries = 5;
+  let retries = totalRetries;
+
   for (let nth = 1; !stop; nth++) {
+    console.debug('[%s] Retries: %o', ID, retries);
     await delay(500, 800);
 
     let retry = false;
@@ -147,6 +151,9 @@ async function run() {
     // get active 'dl' sidebar element
     const info = getPhotoInfo();
     if (!info) {
+      retry = retries-- > 0;
+      if (retry) continue;
+
       console.error('[%s] [%o] Unable to find the file name.', ID, nth);
       break;
     }
@@ -180,7 +187,8 @@ async function run() {
         parsedDate,
         inputResult.infoDate
       );
-      continue;
+      if (retries-- > 0) continue;
+      break;
     }
 
     // get image content to get next arrow button
@@ -211,6 +219,7 @@ async function run() {
 
     // go to next image
     nextButtonDiv.click();
+    retries = totalRetries;
   }
 
   running = undefined;
