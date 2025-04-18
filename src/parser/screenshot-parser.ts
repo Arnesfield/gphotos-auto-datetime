@@ -1,9 +1,9 @@
-import { Parser } from '../types.js';
+import { InternalParser } from '../types.js';
 import { parseFileName } from '../utils/parse-file-name.js';
 
-/** Format: `Screenshot from YYYY-MM-DD HH-MM-SS[-NTH].ext` */
-export const screenshotParser: Parser = {
+export const screenshotParser: InternalParser = {
   name: 'screenshot',
+  formats: ['Screenshot from YYYY-MM-DD HH-MM-SS[-NTH].ext'],
   parse(fileName) {
     // gnome screenshots
     const prefix = 'Screenshot from ';

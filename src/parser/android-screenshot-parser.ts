@@ -1,13 +1,12 @@
-import { Parser } from '../types.js';
+import { InternalParser } from '../types.js';
 import { basicParser } from './basic-parser.js';
 
-/**
- * Formats:
- * - `Screenshot_YYYYMMDD_HHMMSS_APPNAME.ext`
- * - `Screenshot_YYYYMMDD-HHMMSS_APPNAME.ext`
- */
-export const androidScreenshotParser: Parser = {
-  name: 'android-screenshot',
+export const androidScreenshotParser: InternalParser = {
+  name: 'androidScreenshot',
+  formats: [
+    'Screenshot_YYYYMMDD_HHMMSS_APPNAME.ext',
+    'Screenshot_YYYYMMDD-HHMMSS_APPNAME.ext'
+  ],
   parse(fileName) {
     const parts = fileName.split('_').flatMap((part, index, array) => {
       // split hyphen so date and time are separated parts

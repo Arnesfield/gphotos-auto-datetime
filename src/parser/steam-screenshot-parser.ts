@@ -1,9 +1,9 @@
-import { Parser } from '../types.js';
+import { InternalParser } from '../types.js';
 import { createSlicer } from '../utils/slicer.js';
 
-/** Format: `GAMEID_YYYYMMDDHHMMSS_NTH.ext` */
-export const steamScreenshotParser: Parser = {
-  name: 'steam-screenshot',
+export const steamScreenshotParser: InternalParser = {
+  name: 'steamScreenshot',
+  formats: ['GAMEID_YYYYMMDDHHMMSS_NTH.ext'],
   parse(fileName) {
     const parts = fileName.split('_');
     const [gameId, datetime] = parts;

@@ -6,7 +6,7 @@ import { isElementVisible } from '../utils/is-element-visible.js';
 import { normalizeDate } from '../utils/normalize-date.js';
 import { inputDate } from './input-date.js';
 import { parseDisplayDate } from './parse-display-date.js';
-import { parseDate, parsers } from './parsers.js';
+import { parse, parsers } from './parsers.js';
 
 let stop = false;
 let running: Promise<void> | undefined;
@@ -163,7 +163,7 @@ async function run() {
     }
 
     const { name } = dlName;
-    const parsedDate = await parseDate(name);
+    const parsedDate = await parse(name);
     if (!parsedDate) {
       console.error('[%s] [%o] Unable to parse name: %o', ID, nth, name);
       break;
@@ -258,10 +258,3 @@ export const instance: AutoDatetime = {
     status('Status: %o', running ? 'Running' : 'Not Running');
   }
 };
-
-Object.defineProperty(instance, 'parsers', {
-  value: parsers,
-  configurable: false,
-  enumerable: true,
-  writable: false
-});

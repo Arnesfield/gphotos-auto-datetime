@@ -1,10 +1,10 @@
-import { Parser } from '../types.js';
+import { InternalParser } from '../types.js';
 import { parseFileName } from '../utils/parse-file-name.js';
 import { createSlicer } from '../utils/slicer.js';
 
-/** Format: `YYYYMMDD_HHMMSS.ext` */
-export const basicParser = {
+export const basicParser: InternalParser = {
   name: 'basic',
+  formats: ['YYYYMMDD_HHMMSS.ext'],
   parse(fileName) {
     const file = parseFileName(fileName);
     const parts = file.name.split('_');
@@ -31,4 +31,4 @@ export const basicParser = {
       return { year, month, day, hour24, minute, second };
     }
   }
-} satisfies Parser;
+};

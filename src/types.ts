@@ -32,12 +32,18 @@ export interface NormalizedDate extends BaseDate {
 }
 
 export interface Parser {
-  name: string;
+  name?: string;
   parse(fileName: string): MaybePromise<ParsedDate | void>;
 }
 
+export interface InternalParser extends Parser {
+  name: string;
+  /** For display purposes only. */
+  formats: string[];
+}
+
 export interface AutoDatetime {
-  readonly parsers: readonly Parser[];
+  parsers: Record<string, Parser>;
   input(date: ParsedDate): void;
   start(): Promise<void>;
   stop(): Promise<void> | undefined;
