@@ -42,13 +42,20 @@ export interface InternalParser extends Parser {
   formats: string[];
 }
 
+export interface Result {
+  success: number;
+  skipped: number;
+}
+
 export interface AutoDatetime {
-  parsers: Record<string, Parser>;
+  parsers: Parser[];
+  next(): void;
+  previous(): void;
+  parse(value: string): Promise<NormalizedDate | undefined>;
+  input(value: string | NormalizedDate): Promise<void>;
   start(): Promise<void>;
   stop(): Promise<void> | undefined;
   status(): void;
-  input(date: ParsedDate): void;
-  parse(value: string): MaybePromise<NormalizedDate | undefined>;
 }
 
 declare global {

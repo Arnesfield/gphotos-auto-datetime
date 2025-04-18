@@ -3,10 +3,10 @@ import { basicParser } from '../parser/basic-parser.js';
 import { dateParser } from '../parser/date-parser.js';
 import { screenshotParser } from '../parser/screenshot-parser.js';
 import { steamScreenshotParser } from '../parser/steam-screenshot-parser.js';
-import { AutoDatetime, InternalParser, NormalizedDate } from '../types.js';
+import { NormalizedDate, Parser } from '../types.js';
 import { normalizeDate } from '../utils/normalize-date.js';
 
-const internalParsers: InternalParser[] = [
+export const parsers: Parser[] = [
   basicParser,
   androidScreenshotParser,
   screenshotParser,
@@ -14,14 +14,11 @@ const internalParsers: InternalParser[] = [
   dateParser
 ];
 
-export const parsers: AutoDatetime['parsers'] = Object.create(null);
-for (const parser of internalParsers) parsers[parser.name] = parser;
-
 export async function parse(
   value: string
 ): Promise<NormalizedDate | undefined> {
-  for (const p of Object.values(parsers)) {
-    const parsed = await p.parse(value);
+  for (const parser of parsers) {
+    const parsed = await parser.parse(value);
     if (parsed) return normalizeDate(parsed);
   }
 }

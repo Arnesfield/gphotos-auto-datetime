@@ -1,0 +1,151 @@
+import { NAME } from '../constants.js';
+import { Logger } from '../lib/logger.js';
+import { getPhotoInfo } from '../lib/photo-info.js';
+import { AutoDatetime, NormalizedDate, Result } from '../types.js';
+import { delay } from '../utils/delay.js';
+import { isNormalizedDate } from '../utils/is-normalized-date.js';
+import { randomInt } from '../utils/random-int.js';
+import { input } from './input.js';
+import { next, previous } from './navigation.js';
+import { parse, parsers } from './parsers.js';
+import { summary } from './summary.js';
+
+let stop = false;
+let running: Promise<void> | undefined;
+let result: Result = { success: 0, skipped: 0 };
+
+async function run() {
+  const MAX_RETRIES = 5;
+  let nth = 1;
+  let attempts = 0;
+  let prevName: string | undefined;
+  const logger = new Logger(() => nth);
+
+  function retry() {
+    return attempts++ < MAX_RETRIES;
+  }
+
+  while (!stop) {
+    await delay(randomInt(1000, 2000));
+
+    const info = getPhotoInfo();
+    if (!info) {
+      if (!retry()) {
+        logger.error('Unable to find the file name.');
+        break;
+      }
+
+      logger.warn(
+        'Unable to find the file name. Retrying %o of %o.',
+        attempts,
+        MAX_RETRIES
+      );
+      await delay(randomInt(1000, 2000));
+      continue;
+    }
+
+    // retry as the info panel was not updated yet for some reason
+    if (prevName === info.name) {
+      if (!retry()) {
+        logger.error('File name %o did not change.', prevName);
+        break;
+      }
+
+      logger.warn(
+        'File name %o did not change. Retrying %o of %o.',
+        prevName,
+        attempts,
+        MAX_RETRIES
+      );
+      await delay(randomInt(1000, 2000));
+      continue;
+    }
+
+    prevName = info.name;
+    const parsedDate = await parse(info.name);
+    if (!parsedDate) {
+      logger.error('Unable to parse name: %o', info.name);
+      break;
+    }
+
+    const inputResult = await input(logger, info, parsedDate);
+    if (inputResult.success) result.success++;
+    if (inputResult.skipped) result.skipped++;
+    if (stop || inputResult.break) break;
+
+    if (inputResult.success === false) {
+      // retry if not updated
+      logger.warn(
+        'Photo date and time not updated for %o. Parsed: %o Details: %o',
+        info.name,
+        parsedDate,
+        inputResult.infoDate
+      );
+
+      if (!retry()) break;
+      await delay(randomInt(1000, 2000));
+      continue;
+    }
+
+    if (!next(logger)) break;
+
+    await delay(randomInt(500, 1000));
+    nth++;
+    attempts = 0;
+  }
+
+  summary(
+    logger,
+    result,
+    '%s. Enter %o to start again.',
+    stop ? 'Stopped' : 'Done',
+    `${NAME}.start()`
+  );
+}
+
+const logger = new Logger();
+
+export const instance: AutoDatetime = {
+  parsers,
+  next() {
+    next(logger);
+  },
+  previous() {
+    previous(logger);
+  },
+  parse,
+  async input(value: string | NormalizedDate) {
+    const parsedDate =
+      typeof value === 'string'
+        ? await parse(value)
+        : isNormalizedDate(value)
+          ? value
+          : null;
+    if (!parsedDate) {
+      logger.error('Unable to parse input: %o', value);
+      return;
+    }
+
+    const info = getPhotoInfo();
+    if (info) {
+      await input(logger, info, parsedDate);
+    } else {
+      logger.error('Unable to edit date and time.');
+    }
+  },
+  start() {
+    if (!running) {
+      stop = false;
+      result = { success: 0, skipped: 0 };
+      running = run().finally(() => (running = undefined));
+    }
+    return running;
+  },
+  stop() {
+    stop = true;
+    return running;
+  },
+  status() {
+    summary(logger, result, 'Status: %o', running ? 'Running' : 'Not Running');
+  }
+};

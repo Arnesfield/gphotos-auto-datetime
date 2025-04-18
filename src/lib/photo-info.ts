@@ -56,5 +56,7 @@ export function getPhotoInfo(): PhotoInfo | undefined {
 
   const name = fileNameEl?.textContent;
 
-  if (name && dlEl && dateDetailsEl) return { name, dlEl, dateDetailsEl };
+  if (name && dlEl && dateDetailsEl) {
+    return { name, dlEl, dateDetailsEl };
+  }
 }
