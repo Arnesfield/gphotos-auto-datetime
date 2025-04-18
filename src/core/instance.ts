@@ -6,23 +6,13 @@ import { isElementVisible } from '../utils/is-element-visible.js';
 import { normalizeDate } from '../utils/normalize-date.js';
 import { inputDate } from './input-date.js';
 import { parseDisplayDate } from './parse-display-date.js';
-import { parsers } from './parsers.js';
+import { parseDate, parsers } from './parsers.js';
 
 let stop = false;
 let running: Promise<void> | undefined;
 let result = { success: 0, skipped: 0 };
 const dryRun = false;
 const single = false;
-
-async function parseDate(
-  fileName: string
-): Promise<NormalizedDate | undefined> {
-  if (!fileName) return;
-  for (const parser of parsers) {
-    const parsed = await parser.parse(fileName);
-    if (parsed) return normalizeDate(parsed);
-  }
-}
 
 function status(message: string, ...args: string[]) {
   console.log(
@@ -33,6 +23,120 @@ function status(message: string, ...args: string[]) {
     result.skipped,
     result.success + result.skipped
   );
+}
+
+async function input(options: {
+  nth: number;
+  name: string;
+  dl: HTMLDListElement | null | undefined;
+  parsedDate: NormalizedDate;
+}) {
+  const { nth, name, dl, parsedDate } = options;
+  const res: {
+    success?: boolean;
+    skipped?: boolean;
+    break?: boolean;
+    parsedDisplayDate?: NormalizedDate;
+  } = { break: true };
+  const datetimeDiv = dl?.children[0]?.children[0] as
+    | HTMLDivElement
+    | null
+    | undefined;
+  if (!datetimeDiv) {
+    console.error("[%s] [%o] Unable to find 'Date and time' details.", ID, nth);
+    return res;
+  }
+
+  if (!isDateEqual(parsedDate, parseDisplayDate(datetimeDiv))) {
+    datetimeDiv.click();
+
+    // get dialog
+    const dialogDiv = document.querySelector('div[data-back-to-cancel]');
+    if (!dialogDiv) {
+      console.error(
+        "[%s] [%o] Unable to find 'Edit Date & Time' dialog.",
+        ID,
+        nth
+      );
+      return res;
+    }
+
+    const dateInputs = dialogDiv.querySelectorAll<HTMLInputElement>('input');
+    if (dateInputs.length !== 6) {
+      console.error(
+        "[%s] [%o] Unable to find 'Edit Date & Time' dialog fields.",
+        ID,
+        nth
+      );
+      return res;
+    }
+
+    await inputDate(parsedDate, dateInputs);
+    await delay(200, 400);
+
+    // get dialog buttons
+    const buttons = Array.from(
+      dialogDiv.querySelectorAll<HTMLButtonElement>('button')
+    );
+    const saveButtonEl = buttons[1];
+
+    if (!saveButtonEl) {
+      console.error(
+        "[%s] [%o] Unable to find the 'Save' dialog action button.",
+        ID,
+        nth
+      );
+      return res;
+    }
+
+    if (!dryRun) {
+      saveButtonEl.click();
+      console.log(
+        '[%s] [%o] Saved datetime for %o. Parsed: %o',
+        ID,
+        nth,
+        name,
+        parsedDate
+      );
+
+      await delay(500, 1000);
+
+      // verify if correct date
+      res.parsedDisplayDate = parseDisplayDate(datetimeDiv);
+      res.success = isDateEqual(parsedDate, res.parsedDisplayDate);
+    } else {
+      const cancelButtonEl = buttons[0];
+      cancelButtonEl?.click();
+      console.warn(
+        '[%s] [%o] Dry run mode. Edit cancelled for %o. Parsed: %o',
+        ID,
+        nth,
+        name,
+        parsedDate
+      );
+    }
+  } else {
+    console.log(
+      '[%s] [%o] Photo %o already has the correct date and time. Skipping.',
+      ID,
+      nth,
+      name
+    );
+    res.skipped = true;
+    await delay(500, 1000);
+  }
+
+  res.break = false;
+  return res;
+}
+
+function getDlName() {
+  // get active 'dl' sidebar element
+  const dl = Array.from(document.querySelectorAll('dl')).find(isElementVisible);
+  const nameItemDiv = dl?.children[1];
+  const nameDiv = nameItemDiv?.querySelector('dd > div');
+  const name = nameDiv?.textContent;
+  return dl && name && { dl, name };
 }
 
 async function run() {
@@ -52,120 +156,28 @@ async function run() {
     let retry = false;
 
     // get active 'dl' sidebar element
-    const dl = Array.from(document.querySelectorAll('dl')).find(
-      isElementVisible
-    );
-    const nameItemDiv = dl?.children[1];
-    const nameDiv = nameItemDiv?.querySelector('dd > div');
-    const name = nameDiv?.textContent;
-    if (!name) {
+    const dlName = getDlName();
+    if (!dlName) {
       console.error('[%s] [%o] Unable to find the file name.', ID, nth);
       break;
     }
 
+    const { name } = dlName;
     const parsedDate = await parseDate(name);
     if (!parsedDate) {
       console.error('[%s] [%o] Unable to parse name: %o', ID, nth, name);
       break;
     }
 
-    const datetimeDiv = dl?.children[0]?.children[0] as
-      | HTMLDivElement
-      | null
-      | undefined;
-    if (!datetimeDiv) {
-      console.error(
-        "[%s] [%o] Unable to find 'Date and time' details.",
-        ID,
-        nth
-      );
-      break;
-    }
+    const inputResult = await input({ nth, parsedDate, ...dlName });
 
-    if (!isDateEqual(parsedDate, parseDisplayDate(datetimeDiv))) {
-      datetimeDiv.click();
-
-      // get dialog
-      const dialogDiv = document.querySelector('div[data-back-to-cancel]');
-      if (!dialogDiv) {
-        console.error(
-          "[%s] [%o] Unable to find 'Edit Date & Time' dialog.",
-          ID,
-          nth
-        );
-        break;
-      }
-
-      const dateInputs = dialogDiv.querySelectorAll<HTMLInputElement>('input');
-      if (dateInputs.length !== 6) {
-        console.error(
-          "[%s] [%o] Unable to find 'Edit Date & Time' dialog fields.",
-          ID,
-          nth
-        );
-        break;
-      }
-
-      await inputDate(parsedDate, dateInputs);
-      await delay(200, 400);
-
-      // get dialog buttons
-      const buttons = Array.from(
-        dialogDiv.querySelectorAll<HTMLButtonElement>('button')
-      );
-      const saveButtonEl = buttons[1];
-
-      if (!saveButtonEl) {
-        console.error(
-          "[%s] [%o] Unable to find the 'Save' dialog action button.",
-          ID,
-          nth
-        );
-        break;
-      }
-
-      if (!dryRun) {
-        saveButtonEl.click();
-        console.log(
-          '[%s] [%o] Saved datetime for %o. Parsed: %o',
-          ID,
-          nth,
-          name,
-          parsedDate
-        );
-
-        await delay(500, 1000);
-
-        // verify if correct date
-        const correct = isDateEqual(parsedDate, parseDisplayDate(datetimeDiv));
-        if (correct) result.success++;
-
-        // retry if not updated
-        retry = !correct;
-      } else {
-        const cancelButtonEl = buttons[0];
-        cancelButtonEl?.click();
-        console.warn(
-          '[%s] [%o] Dry run mode. Edit cancelled for %o. Parsed: %o',
-          ID,
-          nth,
-          name,
-          parsedDate
-        );
-      }
-    } else {
-      console.log(
-        '[%s] [%o] Photo %o already has the correct date and time. Skipping.',
-        ID,
-        nth,
-        name
-      );
-      result.skipped++;
-      await delay(500, 1000);
-    }
+    if (inputResult.success) result.success++;
+    if (inputResult.skipped) result.skipped++;
+    // retry if not updated
+    if (inputResult.success != null) retry = !inputResult.success;
 
     // check single first so it gets removed when tree-shaken
-    if (single || stop) break;
+    if (single || stop || inputResult.break) break;
 
     if (retry) {
       console.warn(
@@ -174,7 +186,7 @@ async function run() {
         nth,
         name,
         parsedDate,
-        parseDisplayDate(datetimeDiv)
+        inputResult.parsedDisplayDate
       );
       continue;
     }
@@ -220,6 +232,17 @@ async function run() {
 
 export const instance: AutoDatetime = {
   parsers,
+  input(date) {
+    const parsedDate = normalizeDate(date);
+    if (!parsedDate) {
+      console.error('[%s] Unable to normalize the date: %o', ID, date);
+      return;
+    }
+
+    const dlName = getDlName();
+    if (dlName) input({ parsedDate, nth: 0, ...dlName });
+    else console.error('[%s] Unable to edit date and time.', ID);
+  },
   start() {
     if (!running) {
       stop = false;

@@ -38,6 +38,7 @@ export interface Parser {
 
 export interface AutoDatetime {
   readonly parsers: readonly Parser[];
+  input(date: ParsedDate): void;
   start(): Promise<void>;
   stop(): Promise<void> | undefined;
   status(): void;
