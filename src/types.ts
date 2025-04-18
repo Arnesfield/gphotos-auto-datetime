@@ -29,12 +29,16 @@ export interface NormalizedDate extends BaseDate {
   ampm: AmPm;
 }
 
-export interface Parser {
+export interface ParserObject {
   name?: string;
   parse(fileName: string): ParsedDate | void;
 }
 
-export interface InternalParser extends Parser {
+export type ParserFunction = ParserObject['parse'];
+
+export type Parser = ParserObject | ParserFunction;
+
+export interface InternalParser extends ParserObject {
   name: string;
   /** For display purposes only. */
   formats: string[];

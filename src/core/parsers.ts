@@ -16,7 +16,8 @@ export const parsers: Parser[] = [
 
 export function parse(value: string): NormalizedDate | undefined {
   for (const parser of parsers) {
-    const date = parser.parse(value);
+    const date =
+      typeof parser === 'function' ? parser(value) : parser.parse(value);
     if (date) return normalizeDate(date);
   }
 }
