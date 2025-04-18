@@ -108,11 +108,21 @@ export const instance: AutoDatetime = {
   previous() {
     previous(logger);
   },
-  parse,
+  parse(value) {
+    if (!value) {
+      const info = getPhotoInfo();
+      if (!info) {
+        logger.error('Unable to parse date and time info.');
+        return;
+      }
+      value = info.name;
+    }
+    return parse(value);
+  },
   async input(value) {
     const info = getPhotoInfo();
     if (!info) {
-      logger.error('Unable to edit date and time.');
+      logger.error('Unable to parse date and time info.');
       return;
     }
 
