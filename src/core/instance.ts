@@ -19,7 +19,7 @@ async function run() {
   let nth = 1;
   let attempts = 0;
   let prevName: string | undefined;
-  const logger = new Logger(() => nth);
+  const logger = new Logger(() => ({ message: '[%o]', args: [nth] }));
 
   function retry() {
     return attempts++ < MAX_RETRIES;

@@ -1,24 +1,26 @@
 import { name } from '../package-json.js';
 
 export class Logger {
-  constructor(private readonly nth?: () => string | number) {}
+  constructor(
+    private readonly prefix?: () => { message: string; args: unknown[] }
+  ) {}
 
   private print(
     type: 'log' | 'warn' | 'error',
     ...args: [string, ...unknown[]]
   ) {
     const msgs = ['[%s]'];
-    const params: unknown[] = [name];
-    const nth = this.nth?.();
+    const pArgs: unknown[] = [name];
+    const prefix = this.prefix?.();
 
-    if (nth != null) {
-      params.push(nth);
-      msgs.push('[%o]');
+    if (prefix) {
+      msgs.push(prefix.message);
+      pArgs.push(...prefix.args);
     }
     if (args.length > 0) msgs.push(args[0]);
 
     const message = msgs.join(' ');
-    const values = ([message] as unknown[]).concat(params, args.slice(1));
+    const values = ([message] as unknown[]).concat(pArgs, args.slice(1));
 
     console[type](...values);
   }
