@@ -29,7 +29,7 @@ export function next(logger: Logger): boolean | undefined {
 }
 
 export function previous(logger: Logger): boolean | undefined {
-  const buttonDiv = getPhotoButton('next');
+  const buttonDiv = getPhotoButton('previous');
 
   if (!buttonDiv) {
     logger.error("Unable to find the 'Previous' photo button.");
