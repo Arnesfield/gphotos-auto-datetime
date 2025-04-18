@@ -4,11 +4,17 @@ import { createSlicer } from '../utils/slicer.js';
 
 export const basicParser: InternalParser = {
   name: 'basic',
-  formats: ['yyyyMMdd_hhmmss.ext'],
+  formats: ['yyyyMMdd_hhmmss[-NTH].ext'],
   parse(fileName) {
     const file = parseFileName(fileName);
     const parts = file.name.split('_');
-    const [date, time] = parts;
+    const [date, timeNth] = parts;
+
+    let index;
+    const time =
+      timeNth && (index = timeNth.indexOf('-')) > -1
+        ? timeNth.slice(0, index)
+        : timeNth; // this can be undefined but parts.length is checked anyway
 
     // assume year is 4 length! :D
     if (
