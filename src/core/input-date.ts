@@ -24,25 +24,25 @@ export async function inputDate(
     // if value is the same, skip it
     if (inputEl.value === value) continue;
 
-    await delay(100, 300);
+    await delay(50, 150);
 
     // mimic keyboard input
     // NOTE: taken from https://stackoverflow.com/a/69286377/7013346
     inputEl.click();
-    await delay(20);
+    await delay(10);
     inputEl.value = value;
-    await delay(20);
+    await delay(10);
     inputEl.dispatchEvent(new Event('input', opts));
-    await delay(20);
+    await delay(10);
     inputEl.dispatchEvent(new Event('blur', opts));
 
-    await delay(100, 300);
+    await delay(50, 150);
   }
 
   // clicking on ampm field will change it
   const ampmInputEl = inputs[valueList.length];
   if (ampmInputEl.value !== parsedDate.ampm) {
     ampmInputEl.click();
-    await delay(100, 300);
+    await delay(50, 150);
   }
 }
