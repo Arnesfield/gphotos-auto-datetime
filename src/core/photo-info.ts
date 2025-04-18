@@ -33,9 +33,9 @@ export function parseInfoDate(info: PhotoInfo): NormalizedDate | undefined {
   const [mss, ampm] = time.split(' ') as [string, AmPm];
 
   const date = new Date(dateString);
+  const year = date.getFullYear().toString();
   const month = padTime(date.getMonth() + 1);
   const day = padTime(date.getDate());
-  const year = date.getFullYear().toString();
 
   const [hourNoPadding, minute] = mss.split(':');
   const hour = padTime(hourNoPadding);
