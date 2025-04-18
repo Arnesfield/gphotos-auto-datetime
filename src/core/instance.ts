@@ -10,6 +10,7 @@ import { parsers } from './parsers.js';
 
 let stop = false;
 let running: Promise<void> | undefined;
+let result = { success: 0, skipped: 0 };
 const dryRun = false;
 const single = false;
 
@@ -23,15 +24,27 @@ async function parseDate(
   }
 }
 
-async function run() {
+function status(message: string, ...args: string[]) {
   console.log(
-    '[%s] Starting %o. Enter %o to stop.',
+    `[%s] ${message}\n` + '- Success: %o\n' + '- Skipped: %o\n' + '- Total: %o',
+    ID,
+    ...args,
+    result.success,
+    result.skipped,
+    result.success + result.skipped
+  );
+}
+
+async function run() {
+  result = { success: 0, skipped: 0 };
+
+  console.log(
+    '[%s] Starting %o. Enter %o to stop and %o to check status.',
     ID,
     NAME,
-    `${NAME}.stop()`
+    `${NAME}.stop()`,
+    `${NAME}.status()`
   );
-
-  const result = { success: 0, skipped: 0 };
 
   for (let nth = 1; !stop; nth++) {
     await delay(400, 800);
@@ -197,17 +210,11 @@ async function run() {
   }
 
   running = undefined;
-  console.log(
-    '[%s] %s. Enter %o to start again.\n' +
-      '- Success: %o\n' +
-      '- Skipped: %o\n' +
-      '- Total: %o',
-    ID,
+
+  status(
+    '%s. Enter %o to start again.',
     stop ? 'Stopped' : 'Done',
-    `${NAME}.start()`,
-    result.success,
-    result.skipped,
-    result.success + result.skipped
+    `${NAME}.start()`
   );
 }
 
@@ -223,6 +230,9 @@ export const instance: AutoDatetime = {
   stop() {
     stop = true;
     return running;
+  },
+  status() {
+    status('Status: %o', running ? 'Running' : 'Not Running');
   }
 };
 

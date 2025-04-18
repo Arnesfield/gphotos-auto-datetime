@@ -40,6 +40,7 @@ export interface AutoDatetime {
   readonly parsers: readonly Parser[];
   start(): Promise<void>;
   stop(): Promise<void> | undefined;
+  status(): void;
 }
 
 declare global {
