@@ -49,6 +49,7 @@
   "devDependencies": {
     "@eslint/js": "^9.24.0",
     "@rollup/plugin-eslint": "^9.0.5",
+    "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-typescript": "^12.1.2",
     "@types/node": "^22.14.1",
     "concurrently": "^9.1.2",
