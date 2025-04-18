@@ -8,8 +8,8 @@ export const screenshotParser: InternalParser = {
     // gnome screenshots
     const prefix = 'Screenshot from ';
     if (fileName.startsWith(prefix)) {
-      const file = parseFileName(fileName, prefix.length, prefix.length + 1);
-      const [date, time] = file.name.split(' ');
+      const name = parseFileName(fileName, prefix.length, prefix.length + 1);
+      const [date, time] = name.split(' ');
       const [year, month, day] = date.split('-');
       const [hour24, minute, second] = time.split('-');
       return { year, month, day, hour24, minute, second };

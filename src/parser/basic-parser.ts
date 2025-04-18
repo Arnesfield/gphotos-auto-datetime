@@ -6,8 +6,8 @@ export const basicParser: InternalParser = {
   name: 'basic',
   formats: ['yyyyMMdd_hhmmss[-NTH].ext'],
   parse(fileName) {
-    const file = parseFileName(fileName);
-    const parts = file.name.split('_');
+    const name = parseFileName(fileName);
+    const parts = name.split('_');
     const [date, timeNth] = parts;
 
     let index;
