@@ -59,7 +59,7 @@ async function run() {
     }
 
     prevName = info.name;
-    const parsedDate = await parse(info.name);
+    const parsedDate = parse(info.name);
     if (!parsedDate) {
       logger.error('Unable to parse name: %o', info.name);
       break;
@@ -112,7 +112,7 @@ export const instance: AutoDatetime = {
   async input(value: string | NormalizedDate) {
     const parsedDate =
       typeof value === 'string'
-        ? await parse(value)
+        ? parse(value)
         : isNormalizedDate(value)
           ? value
           : null;

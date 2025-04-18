@@ -14,11 +14,9 @@ export const parsers: Parser[] = [
   dateParser
 ];
 
-export async function parse(
-  value: string
-): Promise<NormalizedDate | undefined> {
+export function parse(value: string): NormalizedDate | undefined {
   for (const parser of parsers) {
-    const parsed = await parser.parse(value);
-    if (parsed) return normalizeDate(parsed);
+    const date = parser.parse(value);
+    if (date) return normalizeDate(date);
   }
 }

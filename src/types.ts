@@ -1,7 +1,5 @@
 import { NAME } from './constants.js';
 
-export type MaybePromise<T> = T | Promise<T> | PromiseLike<T>;
-
 export type AmPm = 'AM' | 'PM';
 
 export interface BaseDate {
@@ -33,7 +31,7 @@ export interface NormalizedDate extends BaseDate {
 
 export interface Parser {
   name?: string;
-  parse(fileName: string): MaybePromise<ParsedDate | void>;
+  parse(fileName: string): ParsedDate | void;
 }
 
 export interface InternalParser extends Parser {
@@ -51,7 +49,7 @@ export interface AutoDatetime {
   parsers: Parser[];
   next(): void;
   previous(): void;
-  parse(value: string): Promise<NormalizedDate | undefined>;
+  parse(value: string): NormalizedDate | undefined;
   input(value: string | NormalizedDate): Promise<void>;
   start(): Promise<void>;
   stop(): Promise<void> | undefined;
