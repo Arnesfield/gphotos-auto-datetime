@@ -9,6 +9,8 @@ File name conventions that are recognized by this script:
 - `Screenshot_yyyyMMdd-hhmmss_APPNAME.ext`
 - `Screenshot from yyyy-MM-dd hh-mm-ss[-NTH].ext`
 - `GAMEID_yyyyMMddhhmmss_NTH.ext`
+- `dd MMMM yyyy hh∶mm∶ss.ext`
+- Any valid date string for the [`Date()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date) constructor
 
 > [!CAUTION]
 >

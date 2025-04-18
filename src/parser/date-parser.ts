@@ -3,7 +3,10 @@ import { padTime } from '../utils/pad-time.js';
 
 export const dateParser: InternalParser = {
   name: 'date',
-  formats: ['any date string', 'dd MMMM yyyy hh∶mm∶ss.ext'],
+  formats: [
+    'dd MMMM yyyy hh∶mm∶ss.ext',
+    'Any valid date string for the Date() constructor'
+  ],
   parse(fileName) {
     const date = new Date(fileName.replace(/∶/g, ':'));
     if (!isNaN(+date)) {
