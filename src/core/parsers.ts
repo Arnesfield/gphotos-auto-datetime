@@ -18,10 +18,10 @@ export const parsers: AutoDatetime['parsers'] = Object.create(null);
 for (const parser of internalParsers) parsers[parser.name] = parser;
 
 export async function parse(
-  fileName: string
+  value: string
 ): Promise<NormalizedDate | undefined> {
   for (const p of Object.values(parsers)) {
-    const parsed = await p.parse(fileName);
+    const parsed = await p.parse(value);
     if (parsed) return normalizeDate(parsed);
   }
 }

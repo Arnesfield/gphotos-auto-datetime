@@ -48,6 +48,7 @@ export interface AutoDatetime {
   stop(): Promise<void> | undefined;
   status(): void;
   input(date: ParsedDate): void;
+  parse(value: string): MaybePromise<NormalizedDate | undefined>;
 }
 
 declare global {

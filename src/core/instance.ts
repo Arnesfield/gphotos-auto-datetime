@@ -248,5 +248,6 @@ export const instance: AutoDatetime = {
     const info = getPhotoInfo();
     if (info) input({ parsedDate, nth: 0, info });
     else console.error('[%s] Unable to edit date and time.', ID);
-  }
+  },
+  parse
 };
