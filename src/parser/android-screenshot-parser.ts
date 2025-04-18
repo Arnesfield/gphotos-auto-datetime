@@ -2,7 +2,7 @@ import { InternalParser } from '../types.js';
 import { basicParser } from './basic-parser.js';
 
 export const androidScreenshotParser: InternalParser = {
-  name: 'androidScreenshot',
+  name: 'android-screenshot',
   formats: [
     'Screenshot_yyyyMMdd_hhmmss_APPNAME.ext',
     'Screenshot_yyyyMMdd-hhmmss_APPNAME.ext'
