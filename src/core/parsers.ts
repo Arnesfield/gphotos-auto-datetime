@@ -1,5 +1,6 @@
 import { androidScreenshotParser } from '../parser/android-screenshot-parser.js';
 import { basicParser } from '../parser/basic-parser.js';
+import { dateParser } from '../parser/date-parser.js';
 import { screenshotParser } from '../parser/screenshot-parser.js';
 import { steamScreenshotParser } from '../parser/steam-screenshot-parser.js';
 import { AutoDatetime, InternalParser, NormalizedDate } from '../types.js';
@@ -9,7 +10,8 @@ const internalParsers: InternalParser[] = [
   basicParser,
   androidScreenshotParser,
   screenshotParser,
-  steamScreenshotParser
+  steamScreenshotParser,
+  dateParser
 ];
 
 export const parsers: AutoDatetime['parsers'] = Object.create(null);
