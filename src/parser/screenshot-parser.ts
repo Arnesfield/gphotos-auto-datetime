@@ -3,7 +3,7 @@ import { parseFileName } from '../utils/parse-file-name.js';
 
 export const screenshotParser: InternalParser = {
   name: 'screenshot',
-  formats: ['Screenshot from YYYY-MM-DD HH-MM-SS[-NTH].ext'],
+  formats: ['Screenshot from yyyy-MM-dd hh-mm-ss[-NTH].ext'],
   parse(fileName) {
     // gnome screenshots
     const prefix = 'Screenshot from ';

@@ -4,8 +4,8 @@ import { basicParser } from './basic-parser.js';
 export const androidScreenshotParser: InternalParser = {
   name: 'androidScreenshot',
   formats: [
-    'Screenshot_YYYYMMDD_HHMMSS_APPNAME.ext',
-    'Screenshot_YYYYMMDD-HHMMSS_APPNAME.ext'
+    'Screenshot_yyyyMMdd_hhmmss_APPNAME.ext',
+    'Screenshot_yyyyMMdd-hhmmss_APPNAME.ext'
   ],
   parse(fileName) {
     const parts = fileName.split('_').flatMap((part, index, array) => {

@@ -3,7 +3,7 @@ import { createSlicer } from '../utils/slicer.js';
 
 export const steamScreenshotParser: InternalParser = {
   name: 'steamScreenshot',
-  formats: ['GAMEID_YYYYMMDDHHMMSS_NTH.ext'],
+  formats: ['GAMEID_yyyyMMddhhmmss_NTH.ext'],
   parse(fileName) {
     const parts = fileName.split('_');
     const [gameId, datetime] = parts;

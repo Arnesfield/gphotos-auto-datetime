@@ -4,7 +4,7 @@ import { createSlicer } from '../utils/slicer.js';
 
 export const basicParser: InternalParser = {
   name: 'basic',
-  formats: ['YYYYMMDD_HHMMSS.ext'],
+  formats: ['yyyyMMdd_hhmmss.ext'],
   parse(fileName) {
     const file = parseFileName(fileName);
     const parts = file.name.split('_');
