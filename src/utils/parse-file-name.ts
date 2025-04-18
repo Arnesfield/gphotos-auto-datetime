@@ -5,9 +5,10 @@ export interface ParseFileName {
 
 export function parseFileName(
   fileName: string,
+  start = 0,
   position?: number
 ): ParseFileName {
   let extensionIndex = fileName.indexOf('.', position);
   extensionIndex = extensionIndex > -1 ? extensionIndex : fileName.length;
-  return { extensionIndex, name: fileName.slice(0, extensionIndex) };
+  return { extensionIndex, name: fileName.slice(start, extensionIndex) };
 }
