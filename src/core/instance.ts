@@ -99,22 +99,23 @@ async function run() {
   );
 }
 
-const logger = new Logger();
+// root logger
+const LOG = new Logger();
 
 export const instance: AutoDatetime = {
   meta,
   parsers,
   next() {
-    next(logger);
+    next(LOG);
   },
   previous() {
-    previous(logger);
+    previous(LOG);
   },
   parse(value) {
     if (!value) {
       const info = getPhotoInfo();
       if (!info) {
-        logger.error('Unable to parse date and time info.');
+        LOG.error('Unable to parse date and time info.');
         return;
       }
       value = info.name;
@@ -124,7 +125,7 @@ export const instance: AutoDatetime = {
   async input(value) {
     const info = getPhotoInfo();
     if (!info) {
-      logger.error('Unable to parse date and time info.');
+      LOG.error('Unable to parse date and time info.');
       return;
     }
 
@@ -137,11 +138,11 @@ export const instance: AutoDatetime = {
             ? value
             : null;
     if (!parsedDate) {
-      logger.error('Unable to parse input: %o', value);
+      LOG.error('Unable to parse input: %o', value);
       return;
     }
 
-    await input(logger, info, parsedDate);
+    await input(LOG, info, parsedDate);
   },
   start() {
     if (!running) {
@@ -156,6 +157,6 @@ export const instance: AutoDatetime = {
     return running;
   },
   status() {
-    summary(logger, result, 'Status: %o', running ? 'Running' : 'Not Running');
+    summary(LOG, result, 'Status: %o', running ? 'Running' : 'Not Running');
   }
 };
