@@ -15,9 +15,9 @@ export function normalizeDate(parsed: ParsedDate): NormalizedDate | undefined {
   // check if hour12 is valid
   let hr;
   const parsedHour: ParsedHour | null =
-    parsed.hour12 && (hr = parseHour(parsed.hour12, 12))
+    parsed.hour12 && (hr = parseHour(parsed.hour12, 12)) != null
       ? { hour: hr, ampm: parsed.ampm || 'AM' }
-      : (hr = parseHour(parsed.hour24, 24)) // eslint-disable-line no-cond-assign
+      : (hr = parseHour(parsed.hour24, 24)) != null
         ? {
             hour: hr === 0 || hr === 12 ? 12 : hr - (hr < 12 ? 0 : 12),
             ampm: hr < 12 ? 'AM' : 'PM'
