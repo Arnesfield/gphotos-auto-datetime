@@ -84,7 +84,6 @@ export async function input(
       info.name
     );
     res.skipped = true;
-    await delay(500, 1000);
   }
 
   res.break = false;
