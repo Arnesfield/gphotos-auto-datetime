@@ -49,7 +49,13 @@ export interface Result {
   skipped: number;
 }
 
+export interface Meta {
+  name: string;
+  version: string;
+}
+
 export interface AutoDatetime {
+  meta: Meta;
   parsers: Parser[];
   next(): void;
   previous(): void;

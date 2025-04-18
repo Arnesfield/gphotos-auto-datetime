@@ -5,6 +5,7 @@ import { AutoDatetime, Result } from '../types.js';
 import { delay } from '../utils/delay.js';
 import { isNormalizedDate } from '../utils/is-normalized-date.js';
 import { input } from './input.js';
+import { meta } from './meta.js';
 import { next, previous } from './navigation.js';
 import { parse, parsers } from './parsers.js';
 import { summary } from './summary.js';
@@ -101,6 +102,7 @@ async function run() {
 const logger = new Logger();
 
 export const instance: AutoDatetime = {
+  meta,
   parsers,
   next() {
     next(logger);

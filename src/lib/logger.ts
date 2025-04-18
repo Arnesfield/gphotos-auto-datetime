@@ -1,4 +1,4 @@
-import { ID } from '../constants.js';
+import { name } from '../package-json.js';
 
 export class Logger {
   constructor(private readonly nth?: () => string | number) {}
@@ -8,7 +8,7 @@ export class Logger {
     ...args: [string, ...unknown[]]
   ) {
     const msgs = ['[%s]'];
-    const params: unknown[] = [ID];
+    const params: unknown[] = [name];
     const nth = this.nth?.();
 
     if (nth != null) {
