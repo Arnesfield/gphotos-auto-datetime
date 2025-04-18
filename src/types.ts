@@ -44,10 +44,10 @@ export interface InternalParser extends Parser {
 
 export interface AutoDatetime {
   parsers: Record<string, Parser>;
-  input(date: ParsedDate): void;
   start(): Promise<void>;
   stop(): Promise<void> | undefined;
   status(): void;
+  input(date: ParsedDate): void;
 }
 
 declare global {

@@ -232,17 +232,6 @@ async function run() {
 
 export const instance: AutoDatetime = {
   parsers,
-  input(date) {
-    const parsedDate = normalizeDate(date);
-    if (!parsedDate) {
-      console.error('[%s] Unable to normalize the date: %o', ID, date);
-      return;
-    }
-
-    const dlName = getDlName();
-    if (dlName) input({ parsedDate, nth: 0, ...dlName });
-    else console.error('[%s] Unable to edit date and time.', ID);
-  },
   start() {
     if (!running) {
       stop = false;
@@ -256,5 +245,16 @@ export const instance: AutoDatetime = {
   },
   status() {
     status('Status: %o', running ? 'Running' : 'Not Running');
+  },
+  input(date) {
+    const parsedDate = normalizeDate(date);
+    if (!parsedDate) {
+      console.error('[%s] Unable to normalize the date: %o', ID, date);
+      return;
+    }
+
+    const dlName = getDlName();
+    if (dlName) input({ parsedDate, nth: 0, ...dlName });
+    else console.error('[%s] Unable to edit date and time.', ID);
   }
 };
