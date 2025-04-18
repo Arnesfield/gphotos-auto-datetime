@@ -4,8 +4,11 @@ Google Photos automation script to set the date and time for photos based on the
 
 File name conventions that are recognized by this script:
 
-- `Screenshot from YYYY-MM-DD HH-MM-SS[-NTH].png`
-- `GAMEID_YYYYMMDDHHMMSS_NTH.png`
+- `YYYYMMDD_HHMMSS.ext`
+- `Screenshot_YYYYMMDD_HHMMSS_APPNAME.ext`
+- `Screenshot_YYYYMMDD-HHMMSS_APPNAME.ext`
+- `Screenshot from YYYY-MM-DD HH-MM-SS[-NTH].ext`
+- `GAMEID_YYYYMMDDHHMMSS_NTH.ext`
 
 > [!CAUTION]
 >

@@ -33,7 +33,7 @@ export interface NormalizedDate extends BaseDate {
 
 export interface Parser {
   name: string;
-  parse(fileName: string): MaybePromise<ParsedDate | undefined>;
+  parse(fileName: string): MaybePromise<ParsedDate | void>;
 }
 
 export interface AutoDatetime {
