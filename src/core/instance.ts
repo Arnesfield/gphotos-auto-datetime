@@ -5,8 +5,8 @@ import { isDateEqual } from '../utils/is-date-equal.js';
 import { isElementVisible } from '../utils/is-element-visible.js';
 import { normalizeDate } from '../utils/normalize-date.js';
 import { inputDate } from './input-date.js';
-import { parseDisplayDate } from './parse-display-date.js';
 import { parse, parsers } from './parsers.js';
+import { getPhotoInfo, parseInfoDate, PhotoInfo } from './photo-info.js';
 
 let stop = false;
 let running: Promise<void> | undefined;
@@ -27,28 +27,25 @@ function status(message: string, ...args: string[]) {
 
 async function input(options: {
   nth: number;
-  name: string;
-  dl: HTMLDListElement | null | undefined;
+  info: PhotoInfo;
   parsedDate: NormalizedDate;
 }) {
-  const { nth, name, dl, parsedDate } = options;
+  const { nth, info, parsedDate } = options;
   const res: {
     success?: boolean;
     skipped?: boolean;
     break?: boolean;
-    parsedDisplayDate?: NormalizedDate;
+    infoDate?: NormalizedDate;
   } = { break: true };
-  const datetimeDiv = dl?.children[0]?.children[0] as
-    | HTMLDivElement
-    | null
-    | undefined;
-  if (!datetimeDiv) {
-    console.error("[%s] [%o] Unable to find 'Date and time' details.", ID, nth);
+
+  const infoDate = parseInfoDate(info);
+  if (!infoDate) {
+    console.error('[%s] [%o] Unable to parse date and time.', ID, nth);
     return res;
   }
 
-  if (!isDateEqual(parsedDate, parseDisplayDate(datetimeDiv))) {
-    datetimeDiv.click();
+  if (!isDateEqual(parsedDate, infoDate)) {
+    info.dateDetailsEl.click();
 
     // get dialog
     const dialogDiv = document.querySelector('div[data-back-to-cancel]');
@@ -95,15 +92,15 @@ async function input(options: {
         '[%s] [%o] Saved datetime for %o. Parsed: %o',
         ID,
         nth,
-        name,
+        info.name,
         parsedDate
       );
 
       await delay(500, 1000);
 
       // verify if correct date
-      res.parsedDisplayDate = parseDisplayDate(datetimeDiv);
-      res.success = isDateEqual(parsedDate, res.parsedDisplayDate);
+      res.infoDate = parseInfoDate(info);
+      res.success = !!res.infoDate && isDateEqual(parsedDate, res.infoDate);
     } else {
       const cancelButtonEl = buttons[0];
       cancelButtonEl?.click();
@@ -111,7 +108,7 @@ async function input(options: {
         '[%s] [%o] Dry run mode. Edit cancelled for %o. Parsed: %o',
         ID,
         nth,
-        name,
+        info.name,
         parsedDate
       );
     }
@@ -120,7 +117,7 @@ async function input(options: {
       '[%s] [%o] Photo %o already has the correct date and time. Skipping.',
       ID,
       nth,
-      name
+      info.name
     );
     res.skipped = true;
     await delay(500, 1000);
@@ -128,15 +125,6 @@ async function input(options: {
 
   res.break = false;
   return res;
-}
-
-function getDlName() {
-  // get active 'dl' sidebar element
-  const dl = Array.from(document.querySelectorAll('dl')).find(isElementVisible);
-  const nameItemDiv = dl?.children[1];
-  const nameDiv = nameItemDiv?.querySelector('dd > div');
-  const name = nameDiv?.textContent;
-  return dl && name && { dl, name };
 }
 
 async function run() {
@@ -156,20 +144,20 @@ async function run() {
     let retry = false;
 
     // get active 'dl' sidebar element
-    const dlName = getDlName();
-    if (!dlName) {
+    const info = getPhotoInfo();
+    if (!info) {
       console.error('[%s] [%o] Unable to find the file name.', ID, nth);
       break;
     }
 
-    const { name } = dlName;
+    const { name } = info;
     const parsedDate = await parse(name);
     if (!parsedDate) {
       console.error('[%s] [%o] Unable to parse name: %o', ID, nth, name);
       break;
     }
 
-    const inputResult = await input({ nth, parsedDate, ...dlName });
+    const inputResult = await input({ nth, parsedDate, info });
 
     if (inputResult.success) result.success++;
     if (inputResult.skipped) result.skipped++;
@@ -181,12 +169,12 @@ async function run() {
 
     if (retry) {
       console.warn(
-        '[%s] [%o] Display date and time not updated for %o. Parsed: %o Display: %o',
+        '[%s] [%o] Photo date and time not updated for %o. Parsed: %o Details: %o',
         ID,
         nth,
         name,
         parsedDate,
-        inputResult.parsedDisplayDate
+        inputResult.infoDate
       );
       continue;
     }
@@ -253,8 +241,8 @@ export const instance: AutoDatetime = {
       return;
     }
 
-    const dlName = getDlName();
-    if (dlName) input({ parsedDate, nth: 0, ...dlName });
+    const info = getPhotoInfo();
+    if (info) input({ parsedDate, nth: 0, info });
     else console.error('[%s] Unable to edit date and time.', ID);
   }
 };
