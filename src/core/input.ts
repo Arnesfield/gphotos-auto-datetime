@@ -1,10 +1,10 @@
 import { DRY_RUN } from '../constants.js';
+import { NormalizedDate } from '../date/date.types.js';
+import { isDateEqual } from '../date/is-date-equal.js';
 import { inputDate } from '../lib/input-date.js';
 import { Logger } from '../lib/logger.js';
 import { parseInfoDate, PhotoInfo } from '../lib/photo-info.js';
-import { NormalizedDate } from '../types/date.types.js';
 import { delay } from '../utils/delay.js';
-import { isDateEqual } from '../utils/is-date-equal.js';
 
 export interface InputResult {
   success?: boolean;

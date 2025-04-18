@@ -1,5 +1,5 @@
+import { NormalizedDate } from '../date/date.types.js';
 import { Parser } from '../parser/parser.types.js';
-import { NormalizedDate } from '../types/date.types.js';
 
 export interface Result {
   success: number;

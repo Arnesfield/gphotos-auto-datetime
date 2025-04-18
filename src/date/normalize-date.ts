@@ -1,4 +1,4 @@
-import { AmPm, NormalizedDate, ParsedDate } from '../types/date.types.js';
+import { AmPm, NormalizedDate, ParsedDate } from './date.types.js';
 import { padTime } from './pad-time.js';
 
 interface ParsedHour {

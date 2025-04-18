@@ -1,8 +1,8 @@
 import { NAME } from '../constants.js';
+import { isNormalizedDate } from '../date/is-normalized-date.js';
 import { Logger } from '../lib/logger.js';
 import { getPhotoInfo } from '../lib/photo-info.js';
 import { delay } from '../utils/delay.js';
-import { isNormalizedDate } from '../utils/is-normalized-date.js';
 import { AutoDatetime, Result } from './core.types.js';
 import { input } from './input.js';
 import { meta } from './meta.js';

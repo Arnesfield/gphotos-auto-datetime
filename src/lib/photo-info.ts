@@ -1,7 +1,7 @@
-import { AmPm, NormalizedDate } from '../types/date.types.js';
+import { AmPm, NormalizedDate } from '../date/date.types.js';
+import { padTime } from '../date/pad-time.js';
 import { cleanWhitespace } from '../utils/clean-whitespace.js';
 import { isElementVisible } from '../utils/is-element-visible.js';
-import { padTime } from '../utils/pad-time.js';
 
 const dateTakenSelector = 'dd [aria-label^="Date taken:"]';
 
