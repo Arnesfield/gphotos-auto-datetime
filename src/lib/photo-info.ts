@@ -1,4 +1,4 @@
-import { AmPm, NormalizedDate } from '../types.js';
+import { AmPm, NormalizedDate } from '../types/date.types.js';
 import { cleanWhitespace } from '../utils/clean-whitespace.js';
 import { isElementVisible } from '../utils/is-element-visible.js';
 import { padTime } from '../utils/pad-time.js';

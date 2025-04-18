@@ -1,5 +1,5 @@
-import { InternalParser } from '../types.js';
 import { basicParser } from './basic-parser.js';
+import { InternalParser } from './parser.types.js';
 
 export const androidScreenshotParser: InternalParser = {
   name: 'android-screenshot',

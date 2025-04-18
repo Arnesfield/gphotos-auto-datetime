@@ -1,4 +1,4 @@
-import { NormalizedDate } from '../types.js';
+import { NormalizedDate } from '../types/date.types.js';
 
 export function isDateEqual(a: NormalizedDate, b: NormalizedDate): boolean {
   // skip second check

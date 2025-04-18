@@ -1,6 +1,6 @@
-import { InternalParser } from '../types.js';
 import { parseFileName } from '../utils/parse-file-name.js';
 import { createSlicer } from '../utils/slicer.js';
+import { InternalParser } from './parser.types.js';
 
 export const basicParser: InternalParser = {
   name: 'basic',

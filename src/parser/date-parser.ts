@@ -1,5 +1,5 @@
-import { InternalParser } from '../types.js';
 import { padTime } from '../utils/pad-time.js';
+import { InternalParser } from './parser.types.js';
 
 export const dateParser: InternalParser = {
   name: 'date',

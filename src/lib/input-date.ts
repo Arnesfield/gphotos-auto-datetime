@@ -1,4 +1,4 @@
-import { NormalizedDate } from '../types.js';
+import { NormalizedDate } from '../types/date.types.js';
 import { delay } from '../utils/delay.js';
 
 export async function inputDate(

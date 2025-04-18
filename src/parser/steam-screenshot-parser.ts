@@ -1,5 +1,5 @@
-import { InternalParser } from '../types.js';
 import { createSlicer } from '../utils/slicer.js';
+import { InternalParser } from './parser.types.js';
 
 export const steamScreenshotParser: InternalParser = {
   name: 'steam-screenshot',

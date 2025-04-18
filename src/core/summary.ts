@@ -1,5 +1,5 @@
 import { Logger } from '../lib/logger.js';
-import { Result } from '../types.js';
+import { Result } from './core.types.js';
 
 export function summary(
   logger: Logger,
