@@ -1,7 +1,7 @@
 import { NAME } from '../constants.js';
 import { Logger } from '../lib/logger.js';
 import { getPhotoInfo } from '../lib/photo-info.js';
-import { AutoDatetime, NormalizedDate, Result } from '../types.js';
+import { AutoDatetime, Result } from '../types.js';
 import { delay } from '../utils/delay.js';
 import { isNormalizedDate } from '../utils/is-normalized-date.js';
 import { input } from './input.js';
@@ -109,24 +109,27 @@ export const instance: AutoDatetime = {
     previous(logger);
   },
   parse,
-  async input(value: string | NormalizedDate) {
+  async input(value) {
+    const info = getPhotoInfo();
+    if (!info) {
+      logger.error('Unable to edit date and time.');
+      return;
+    }
+
     const parsedDate =
-      typeof value === 'string'
-        ? parse(value)
-        : isNormalizedDate(value)
-          ? value
-          : null;
+      value == null
+        ? parse(info.name)
+        : typeof value === 'string'
+          ? parse(value)
+          : isNormalizedDate(value)
+            ? value
+            : null;
     if (!parsedDate) {
       logger.error('Unable to parse input: %o', value);
       return;
     }
 
-    const info = getPhotoInfo();
-    if (info) {
-      await input(logger, info, parsedDate);
-    } else {
-      logger.error('Unable to edit date and time.');
-    }
+    await input(logger, info, parsedDate);
   },
   start() {
     if (!running) {

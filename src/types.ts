@@ -50,7 +50,7 @@ export interface AutoDatetime {
   next(): void;
   previous(): void;
   parse(value: string): NormalizedDate | undefined;
-  input(value: string | NormalizedDate): Promise<void>;
+  input(value?: string | NormalizedDate): Promise<void>;
   start(): Promise<void>;
   stop(): Promise<void> | undefined;
   status(): void;
