@@ -173,3 +173,15 @@ export const instance: AutoDatetime = {
     summary(result, 'Status: %o', running ? 'Running' : 'Not Running');
   }
 };
+
+export async function init(): Promise<void> {
+  // stop existing instance if any
+  const adt = window[NAME];
+  if (adt && typeof adt === 'object' && typeof adt.stop === 'function') {
+    await adt.stop();
+  }
+
+  // start auto datetime
+  // handle cases when the previous instance is stopped early by the call above
+  if (!stop) instance.start();
+}
