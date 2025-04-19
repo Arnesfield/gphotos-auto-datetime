@@ -46,9 +46,7 @@ export async function input(
     await delay(200, 400);
 
     // get dialog buttons
-    const buttons = Array.from(
-      dialogDiv.querySelectorAll<HTMLButtonElement>('button')
-    );
+    const buttons = dialogDiv.querySelectorAll<HTMLButtonElement>('button');
     const saveButtonEl = buttons[1];
 
     if (!saveButtonEl) {
