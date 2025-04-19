@@ -1,8 +1,6 @@
 import { NAME } from '../constants.js';
-import { isNormalizedDate } from '../date/is-normalized-date.js';
-import { normalizeDate } from '../date/normalize-date.js';
-import { parseDate } from '../date/parse-date.js';
 import { Logger } from '../lib/logger.js';
+import { parseInput } from '../lib/parse-input.js';
 import { getPhotoInfo } from '../lib/photo-info.js';
 import { delay } from '../utils/delay.js';
 import { AutoDatetime, Result } from './core.types.js';
@@ -125,15 +123,7 @@ export const instance: AutoDatetime = {
     previous(LOG);
   },
   parse(value) {
-    if (!value) {
-      const info = getPhotoInfo();
-      if (!info) return;
-      value = info.name;
-    } else if (value instanceof Date) {
-      const date = parseDate(value);
-      return date && normalizeDate(date);
-    }
-    return parse(value);
+    return parseInput(value);
   },
   async input(value) {
     if (running) return block();
@@ -144,14 +134,7 @@ export const instance: AutoDatetime = {
       return;
     }
 
-    const parsedDate =
-      value == null
-        ? parse(info.name)
-        : typeof value === 'string'
-          ? parse(value)
-          : isNormalizedDate(value)
-            ? value
-            : null;
+    const parsedDate = parseInput(value, info);
     if (!parsedDate) {
       LOG.error('Unable to parse input: %o', value);
       return;

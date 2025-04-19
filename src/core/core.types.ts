@@ -16,8 +16,8 @@ export interface AutoDatetime {
   parsers: Parser[];
   next(): void;
   previous(): void;
-  parse(value?: string | Date): NormalizedDate | undefined;
-  input(value?: string | NormalizedDate): Promise<void>;
+  parse(value?: string | Date | NormalizedDate): NormalizedDate | undefined;
+  input(value?: string | Date | NormalizedDate): Promise<void>;
   start(): Promise<void>;
   stop(): Promise<void> | undefined;
   status(): void;
