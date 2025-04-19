@@ -21,6 +21,13 @@ async function run() {
   let prevName: string | undefined;
   const logger = new Logger(() => ({ message: '[%o]', args: [nth] }));
 
+  logger.log(
+    'Starting %o. Enter %o to stop and %o to check status.',
+    NAME,
+    `${NAME}.stop()`,
+    `${NAME}.status()`
+  );
+
   function retry() {
     return attempts++ < MAX_RETRIES;
   }
@@ -102,13 +109,23 @@ async function run() {
 // root logger
 const LOG = new Logger();
 
+function block() {
+  LOG.warn(
+    'Cannot perform this action while %o is running. Enter %o to stop.',
+    NAME,
+    `${NAME}.stop()`
+  );
+}
+
 export const instance: AutoDatetime = {
   meta,
   parsers,
   next() {
+    if (running) return block();
     next(LOG);
   },
   previous() {
+    if (running) return block();
     previous(LOG);
   },
   parse(value) {
@@ -123,6 +140,8 @@ export const instance: AutoDatetime = {
     return parse(value);
   },
   async input(value) {
+    if (running) return block();
+
     const info = getPhotoInfo();
     if (!info) {
       LOG.error('Unable to parse date and time info.');
@@ -154,6 +173,7 @@ export const instance: AutoDatetime = {
   },
   stop() {
     stop = true;
+    if (running) LOG.log('Stopping %o.', NAME);
     return running;
   },
   status() {
