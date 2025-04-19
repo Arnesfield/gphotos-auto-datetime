@@ -5,16 +5,11 @@ import { defaultParser } from '../parser/default-parser';
 import { nautilusDateParser } from '../parser/nautilus-date-parser';
 import { Parser } from '../parser/parser.types';
 
-export const parsers: Parser[] = [
-  defaultParser,
-  nautilusDateParser,
-  dateParser
-];
+const parsers: Parser[] = [defaultParser, nautilusDateParser, dateParser];
 
 export function parse(value: string): NormalizedDate | undefined {
   for (const parser of parsers) {
-    const date =
-      typeof parser === 'function' ? parser(value) : parser.parse(value);
+    const date = parser.parse(value);
     if (date) return normalizeDate(date);
   }
 }

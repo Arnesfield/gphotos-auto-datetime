@@ -1,4 +1,4 @@
-import { ParserObject } from './parser.types';
+import { Parser } from './parser.types';
 
 const regexps = [
   /(\d{4})(\d{2})(\d{2})[_-]?(\d{2})(\d{2})(\d{2})/,
@@ -13,7 +13,7 @@ const regexps = [
  * - `yyyy-MM-dd hh-mm-ss`
  * - `yyyy-MM-dd_hh-mm-ss`
  */
-export const defaultParser: ParserObject = {
+export const defaultParser: Parser = {
   name: 'default',
   parse(fileName) {
     for (const regexp of regexps) {

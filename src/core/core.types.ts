@@ -1,5 +1,4 @@
 import { NormalizedDate } from '../date/date.types';
-import { Parser } from '../parser/parser.types';
 
 export interface Result {
   success: number;
@@ -11,14 +10,16 @@ export interface Meta {
   version: string;
 }
 
+export type ParserFunction = (name: string) => NormalizedDate | undefined;
+
 export interface AutoDatetime {
   meta: Meta;
-  parsers: Parser[];
+  info(): { name: string; date: NormalizedDate | undefined } | undefined;
   next(): void;
   previous(): void;
   parse(value?: string | Date | NormalizedDate): NormalizedDate | undefined;
   input(value?: string | Date | NormalizedDate): Promise<void>;
-  start(): Promise<void>;
+  start(parser?: ParserFunction): Promise<void>;
   stop(): Promise<void> | undefined;
   status(): void;
 }

@@ -1,17 +1,19 @@
 import { NAME } from '../constants';
+import { isNormalizedDate } from '../date/is-normalized-date';
 import { Logger } from '../lib/logger';
 import { parseInput } from '../lib/parse-input';
-import { getPhotoInfo } from '../lib/photo-info';
+import { getPhotoInfo, parseInfoDate } from '../lib/photo-info';
 import { delay } from '../utils/delay';
-import { AutoDatetime, Result } from './core.types';
+import { AutoDatetime, ParserFunction, Result } from './core.types';
 import { input } from './input';
 import { meta } from './meta';
 import { next, previous } from './navigation';
-import { parse, parsers } from './parsers';
+import { parse } from './parsers';
 
 let stop = false;
 let running: Promise<void> | undefined;
 let result: Result = { success: 0, skipped: 0 };
+let parserFn: ParserFunction | undefined;
 
 async function run() {
   const MAX_RETRIES = 5;
@@ -59,7 +61,8 @@ async function run() {
     }
 
     prevName = info.name;
-    const parsedDate = parse(info.name);
+    const parsed = typeof parserFn === 'function' && parserFn(info.name);
+    const parsedDate = isNormalizedDate(parsed) ? parsed : parse(info.name);
     if (!parsedDate) {
       logger.error('Unable to parse name: %o', info.name);
       break;
@@ -113,7 +116,10 @@ function block() {
 
 export const instance: AutoDatetime = {
   meta,
-  parsers,
+  info() {
+    const info = getPhotoInfo();
+    return info && { name: info.name, date: parseInfoDate(info) };
+  },
   next() {
     if (running) return block();
     next(LOG);
@@ -142,7 +148,9 @@ export const instance: AutoDatetime = {
 
     await input(LOG, info, parsedDate);
   },
-  start() {
+  start(parser) {
+    parserFn = parser;
+
     const msg = 'Enter %o to stop and %o to check status.';
     const args = [`${NAME}.stop()`, `${NAME}.status()`];
     if (running) {
