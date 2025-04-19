@@ -158,13 +158,12 @@ export const instance: AutoDatetime = {
     await input(LOG, info, parsedDate);
   },
   start() {
-    if (!running) {
-      LOG.log(
-        'Starting %o. Enter %o to stop and %o to check status.',
-        NAME,
-        `${NAME}.stop()`,
-        `${NAME}.status()`
-      );
+    const msg = 'Enter %o to stop and %o to check status.';
+    const args = [`${NAME}.stop()`, `${NAME}.status()`];
+    if (running) {
+      LOG.warn(`%o already started. ${msg}`, NAME, ...args);
+    } else {
+      LOG.log(`Starting %o. ${msg}`, NAME, ...args);
 
       stop = false;
       result = { success: 0, skipped: 0 };
