@@ -1,5 +1,5 @@
+import { zeroPad } from '../utils/zero-pad.js';
 import { AmPm, NormalizedDate, ParsedDate } from './date.types.js';
-import { padTime } from './pad-time.js';
 
 interface ParsedHour {
   hour: number | string;
@@ -27,11 +27,11 @@ export function normalizeDate(parsed: ParsedDate): NormalizedDate | undefined {
 
   const { ampm } = parsedHour;
   const { year } = parsed;
-  const month = padTime(parsed.month);
-  const day = padTime(parsed.day);
-  const hour = padTime(parsedHour.hour);
-  const minute = padTime(parsed.minute);
-  const second = padTime(parsed.second);
+  const month = zeroPad(parsed.month);
+  const day = zeroPad(parsed.day);
+  const hour = zeroPad(parsedHour.hour);
+  const minute = zeroPad(parsed.minute);
+  const second = zeroPad(parsed.second);
 
   return { year, month, day, hour, minute, second, ampm };
 }

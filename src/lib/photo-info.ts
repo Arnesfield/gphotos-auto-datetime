@@ -1,6 +1,6 @@
 import { AmPm, NormalizedDate } from '../date/date.types.js';
-import { padTime } from '../date/pad-time.js';
 import { isElementVisible } from '../utils/is-element-visible.js';
+import { zeroPad } from '../utils/zero-pad.js';
 
 const dateTakenSelector = 'dd [aria-label^="Date taken:"]';
 
@@ -34,11 +34,11 @@ export function parseInfoDate(info: PhotoInfo): NormalizedDate | undefined {
 
   const date = new Date(dateString);
   const year = date.getFullYear().toString();
-  const month = padTime(date.getMonth() + 1);
-  const day = padTime(date.getDate());
+  const month = zeroPad(date.getMonth() + 1);
+  const day = zeroPad(date.getDate());
 
   const [hourNoPadding, minute] = mss.split(':');
-  const hour = padTime(hourNoPadding);
+  const hour = zeroPad(hourNoPadding);
 
   return { year, month, day, hour, minute, second: '00', ampm };
 }
