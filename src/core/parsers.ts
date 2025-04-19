@@ -1,17 +1,13 @@
 import { NormalizedDate } from '../date/date.types.js';
 import { normalizeDate } from '../date/normalize-date.js';
-import { androidScreenshotParser } from '../parser/android-screenshot-parser.js';
-import { basicParser } from '../parser/basic-parser.js';
 import { dateParser } from '../parser/date-parser.js';
+import { defaultParser } from '../parser/default-parser.js';
+import { nautilusDateParser } from '../parser/nautilus-date-parser.js';
 import { Parser } from '../parser/parser.types.js';
-import { screenshotParser } from '../parser/screenshot-parser.js';
-import { steamScreenshotParser } from '../parser/steam-screenshot-parser.js';
 
 export const parsers: Parser[] = [
-  basicParser,
-  androidScreenshotParser,
-  screenshotParser,
-  steamScreenshotParser,
+  defaultParser,
+  nautilusDateParser,
   dateParser
 ];
 

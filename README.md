@@ -2,14 +2,14 @@
 
 Google Photos automation script to set the date and time for photos based on the file name.
 
-File name conventions that are recognized by this script:
+File name date formats that are recognized by this script:
 
-- `yyyyMMdd_hhmmss[-NTH].ext`
-- `Screenshot_yyyyMMdd_hhmmss_APPNAME.ext`
-- `Screenshot_yyyyMMdd-hhmmss_APPNAME.ext`
-- `Screenshot from yyyy-MM-dd hh-mm-ss[-NTH].ext`
-- `GAMEID_yyyyMMddhhmmss_NTH.ext`
-- `dd MMMM yyyy hh∶mm∶ss.ext`
+- `yyyyMMdd_hhmmss`
+- `yyyyMMdd-hhmmss`
+- `yyyyMMddhhmmss`
+- `yyyy-MM-dd hh-mm-ss`
+- `yyyy-MM-dd_hh-mm-ss`
+- `d MMMM yyyy hh∶mm∶ss`
 - Any valid date string for the [`Date()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date) constructor
 
 > [!CAUTION]
