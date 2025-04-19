@@ -127,10 +127,7 @@ export const instance: AutoDatetime = {
   parse(value) {
     if (!value) {
       const info = getPhotoInfo();
-      if (!info) {
-        LOG.error('Unable to parse date and time info.');
-        return;
-      }
+      if (!info) return;
       value = info.name;
     } else if (value instanceof Date) {
       const date = parseDate(value);
