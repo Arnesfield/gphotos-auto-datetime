@@ -25,6 +25,10 @@ function clean() {
   });
 }
 
+function size() {
+  return outputSize({ bytes: true });
+}
+
 function defineConfig(options: (false | RollupOptions)[]) {
   return options.filter((options): options is RollupOptions => !!options);
 }
@@ -33,12 +37,12 @@ export default defineConfig([
   {
     input,
     output: { file: pkg.module, name: NAME, format: 'iife' },
-    plugins: [build(), json(), clean(), outputSize()]
+    plugins: [build(), json(), clean(), size()]
   },
   {
     input,
     output: { file: pkg.unpkg, name: NAME, format: 'iife' },
-    plugins: [build({ minify: true }), json(), clean(), outputSize()]
+    plugins: [build({ minify: true }), json(), clean(), size()]
   },
   WATCH && {
     input,
