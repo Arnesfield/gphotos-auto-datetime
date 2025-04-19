@@ -1,5 +1,5 @@
-import { zeroPad } from '../utils/zero-pad.js';
-import { AmPm, NormalizedDate, ParsedDate } from './date.types.js';
+import { zeroPad } from '../utils/zero-pad';
+import { AmPm, NormalizedDate, ParsedDate } from './date.types';
 
 interface ParsedHour {
   hour: number | string;

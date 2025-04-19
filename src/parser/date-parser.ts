@@ -1,5 +1,5 @@
-import { parseDate } from '../date/parse-date.js';
-import { ParserObject } from './parser.types.js';
+import { parseDate } from '../date/parse-date';
+import { ParserObject } from './parser.types';
 
 /** Format: Any valid date string for the `Date()` constructor. */
 export const dateParser: ParserObject = {

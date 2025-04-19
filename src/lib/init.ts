@@ -1,5 +1,5 @@
-import { NAME } from '../constants.js';
-import { instance } from '../core/instance.js';
+import { NAME } from '../constants';
+import { instance } from '../core/instance';
 
 export async function init(): Promise<void> {
   // stop existing instance if any

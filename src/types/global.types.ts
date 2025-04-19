@@ -1,5 +1,5 @@
-import { NAME } from '../constants.js';
-import { AutoDatetime } from '../core/core.types.js';
+import { NAME } from '../constants';
+import { AutoDatetime } from '../core/core.types';
 
 declare global {
   interface Window {

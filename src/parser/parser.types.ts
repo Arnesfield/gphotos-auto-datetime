@@ -1,4 +1,4 @@
-import { ParsedDate } from '../date/date.types.js';
+import { ParsedDate } from '../date/date.types';
 
 export interface ParserObject {
   name?: string;

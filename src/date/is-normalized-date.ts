@@ -1,4 +1,4 @@
-import { NormalizedDate } from './date.types.js';
+import { NormalizedDate } from './date.types';
 
 // @ts-expect-error use specific type for internal usage
 export function isNormalizedDate(o: unknown): o is NormalizedDate;

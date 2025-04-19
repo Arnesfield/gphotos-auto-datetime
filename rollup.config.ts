@@ -8,7 +8,7 @@ import esbuild, {
 } from 'rollup-plugin-esbuild';
 import outputSize from 'rollup-plugin-output-size';
 import pkg from './package.json' with { type: 'json' };
-import { NAME } from './src/constants.js';
+import { NAME } from './src/constants';
 
 // const PROD = process.env.NODE_ENV !== 'development';
 const WATCH = process.env.ROLLUP_WATCH === 'true';

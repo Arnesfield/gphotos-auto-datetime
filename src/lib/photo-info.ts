@@ -1,6 +1,6 @@
-import { AmPm, NormalizedDate } from '../date/date.types.js';
-import { isElementVisible } from '../utils/is-element-visible.js';
-import { zeroPad } from '../utils/zero-pad.js';
+import { AmPm, NormalizedDate } from '../date/date.types';
+import { isElementVisible } from '../utils/is-element-visible';
+import { zeroPad } from '../utils/zero-pad';
 
 const dateTakenSelector = 'dd [aria-label^="Date taken:"]';
 

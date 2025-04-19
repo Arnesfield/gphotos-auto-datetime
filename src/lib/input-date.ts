@@ -1,5 +1,5 @@
-import { NormalizedDate } from '../date/date.types.js';
-import { delay } from '../utils/delay.js';
+import { NormalizedDate } from '../date/date.types';
+import { delay } from '../utils/delay';
 
 export async function inputDate(
   parsedDate: NormalizedDate,

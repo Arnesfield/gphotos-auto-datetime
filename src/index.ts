@@ -1,5 +1,5 @@
-import { instance } from './core/instance.js';
-import { init } from './lib/init.js';
+import { instance } from './core/instance';
+import { init } from './lib/init';
 
 init();
 

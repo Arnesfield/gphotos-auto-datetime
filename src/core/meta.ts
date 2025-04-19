@@ -1,4 +1,4 @@
-import { name, version } from '../package-json.js';
-import { Meta } from './core.types.js';
+import { name, version } from '../package-json';
+import { Meta } from './core.types';
 
 export const meta: Meta = { name, version };

@@ -1,9 +1,9 @@
-import { parse } from '../core/parsers.js';
-import { NormalizedDate } from '../date/date.types.js';
-import { isNormalizedDate } from '../date/is-normalized-date.js';
-import { normalizeDate } from '../date/normalize-date.js';
-import { parseDate } from '../date/parse-date.js';
-import { getPhotoInfo, PhotoInfo } from './photo-info.js';
+import { parse } from '../core/parsers';
+import { NormalizedDate } from '../date/date.types';
+import { isNormalizedDate } from '../date/is-normalized-date';
+import { normalizeDate } from '../date/normalize-date';
+import { parseDate } from '../date/parse-date';
+import { getPhotoInfo, PhotoInfo } from './photo-info';
 
 export function parseInput(
   value: Date | NormalizedDate | string | undefined,

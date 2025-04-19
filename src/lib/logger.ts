@@ -1,4 +1,4 @@
-import { name } from '../package-json.js';
+import { name } from '../package-json';
 
 export class Logger {
   constructor(

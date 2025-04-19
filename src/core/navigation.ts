@@ -1,5 +1,5 @@
-import { Logger } from '../lib/logger.js';
-import { isElementVisible } from '../utils/is-element-visible.js';
+import { Logger } from '../lib/logger';
+import { isElementVisible } from '../utils/is-element-visible';
 
 function getPhotoButton(type: 'next' | 'previous') {
   // get image content to get arrow buttons

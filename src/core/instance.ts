@@ -1,13 +1,13 @@
-import { NAME } from '../constants.js';
-import { Logger } from '../lib/logger.js';
-import { parseInput } from '../lib/parse-input.js';
-import { getPhotoInfo } from '../lib/photo-info.js';
-import { delay } from '../utils/delay.js';
-import { AutoDatetime, Result } from './core.types.js';
-import { input } from './input.js';
-import { meta } from './meta.js';
-import { next, previous } from './navigation.js';
-import { parse, parsers } from './parsers.js';
+import { NAME } from '../constants';
+import { Logger } from '../lib/logger';
+import { parseInput } from '../lib/parse-input';
+import { getPhotoInfo } from '../lib/photo-info';
+import { delay } from '../utils/delay';
+import { AutoDatetime, Result } from './core.types';
+import { input } from './input';
+import { meta } from './meta';
+import { next, previous } from './navigation';
+import { parse, parsers } from './parsers';
 
 let stop = false;
 let running: Promise<void> | undefined;
