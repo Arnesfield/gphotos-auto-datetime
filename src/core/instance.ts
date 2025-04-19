@@ -1,5 +1,7 @@
 import { NAME } from '../constants.js';
 import { isNormalizedDate } from '../date/is-normalized-date.js';
+import { normalizeDate } from '../date/normalize-date.js';
+import { parseDate } from '../date/parse-date.js';
 import { Logger } from '../lib/logger.js';
 import { getPhotoInfo } from '../lib/photo-info.js';
 import { delay } from '../utils/delay.js';
@@ -130,6 +132,9 @@ export const instance: AutoDatetime = {
         return;
       }
       value = info.name;
+    } else if (value instanceof Date) {
+      const date = parseDate(value);
+      return date && normalizeDate(date);
     }
     return parse(value);
   },
