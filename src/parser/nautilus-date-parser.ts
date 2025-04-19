@@ -1,11 +1,11 @@
 import { zeroPad } from '../utils/zero-pad';
-import { InternalParser } from './parser.types';
+import { ParserObject } from './parser.types';
 
 const regexp = /(\d{1,2}) (\w+) (\d{4}) (\d{2})∶(\d{2})∶(\d{2})/;
 
-export const nautilusDateParser: InternalParser = {
+/** Format: `d MMMM yyyy hh∶mm∶ss` */
+export const nautilusDateParser: ParserObject = {
   name: 'nautilus-date',
-  formats: ['d MMMM yyyy hh∶mm∶ss'],
   parse(fileName) {
     const match = fileName.match(regexp);
     if (!match || match.length !== 7) return;

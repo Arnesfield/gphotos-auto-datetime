@@ -8,9 +8,3 @@ export interface ParserObject {
 export type ParserFunction = ParserObject['parse'];
 
 export type Parser = ParserObject | ParserFunction;
-
-export interface InternalParser extends ParserObject {
-  name: string;
-  /** For display purposes only. */
-  formats: string[];
-}
