@@ -8,7 +8,6 @@ import { input } from './input.js';
 import { meta } from './meta.js';
 import { next, previous } from './navigation.js';
 import { parse, parsers } from './parsers.js';
-import { summary } from './summary.js';
 
 let stop = false;
 let running: Promise<void> | undefined;
@@ -20,13 +19,6 @@ async function run() {
   let attempts = 0;
   let prevName: string | undefined;
   const logger = new Logger(() => ({ message: '[%o]', args: [nth] }));
-
-  logger.log(
-    'Starting %o. Enter %o to stop and %o to check status.',
-    NAME,
-    `${NAME}.stop()`,
-    `${NAME}.status()`
-  );
 
   function retry() {
     return attempts++ < MAX_RETRIES;
@@ -96,18 +88,20 @@ async function run() {
     nth++;
     attempts = 0;
   }
-
-  summary(
-    logger,
-    result,
-    '%s. Enter %o to start again.',
-    stop ? 'Stopped' : 'Done',
-    `${NAME}.start()`
-  );
 }
 
 // root logger
 const LOG = new Logger();
+
+function summary(result: Result, message: string, ...args: string[]): void {
+  LOG.log(
+    `${message}\n` + '- Success: %o\n' + '- Skipped: %o\n' + '- Total: %o',
+    ...args,
+    result.success,
+    result.skipped,
+    result.success + result.skipped
+  );
+}
 
 function block() {
   LOG.warn(
@@ -165,9 +159,24 @@ export const instance: AutoDatetime = {
   },
   start() {
     if (!running) {
+      LOG.log(
+        'Starting %o. Enter %o to stop and %o to check status.',
+        NAME,
+        `${NAME}.stop()`,
+        `${NAME}.status()`
+      );
+
       stop = false;
       result = { success: 0, skipped: 0 };
-      running = run().finally(() => (running = undefined));
+      running = run().finally(() => {
+        running = undefined;
+        summary(
+          result,
+          '%s. Enter %o to start again.',
+          stop ? 'Stopped' : 'Done',
+          `${NAME}.start()`
+        );
+      });
     }
     return running;
   },
@@ -177,6 +186,6 @@ export const instance: AutoDatetime = {
     return running;
   },
   status() {
-    summary(LOG, result, 'Status: %o', running ? 'Running' : 'Not Running');
+    summary(result, 'Status: %o', running ? 'Running' : 'Not Running');
   }
 };
