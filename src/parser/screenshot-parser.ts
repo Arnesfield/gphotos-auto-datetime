@@ -5,10 +5,11 @@ export const screenshotParser: InternalParser = {
   name: 'screenshot',
   formats: ['Screenshot from yyyy-MM-dd hh-mm-ss[-NTH].ext'],
   parse(fileName) {
-    // gnome screenshots
     const prefix = 'Screenshot from ';
-    if (fileName.startsWith(prefix)) {
-      const name = parseFileName(fileName, prefix.length, prefix.length + 1);
+    const index = fileName.indexOf(prefix);
+    if (index > -1) {
+      const start = index + prefix.length;
+      const name = parseFileName(fileName, start, start + 1);
       const [date, time] = name.split(' ');
       const [year, month, day] = date.split('-');
       const [hour24, minute, second] = time.split('-');
