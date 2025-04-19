@@ -1,6 +1,6 @@
 import { AmPm, ParsedDate } from './date.types';
 
-const regexp = /(\d{2})\/(\d{2})\/(\d{4}), (\d{2}):(\d{2}):(\d{2}) (\w{2})/;
+const regexp = /(\d{2})\/(\d{2})\/(\d{4}), (\d{2}):(\d{2}):(\d{2}) (AM|PM)/i;
 
 export function parseDate(date: Date): ParsedDate | undefined {
   if (isNaN(+date)) return;
@@ -17,16 +17,8 @@ export function parseDate(date: Date): ParsedDate | undefined {
     .format(date)
     .match(regexp);
   if (match?.length === 8) {
-    const [, month, day, year, hour12, minute, second, ampm] = match as [
-      string,
-      string,
-      string,
-      string,
-      string,
-      string,
-      string,
-      AmPm
-    ];
+    const [, month, day, year, hour12, minute, second, ampmValue] = match;
+    const ampm = ampmValue.toUpperCase() as AmPm;
     return { year, month, day, hour12, minute, second, ampm };
   }
 }
