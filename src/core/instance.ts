@@ -3,12 +3,12 @@ import { isNormalizedDate } from '../date/is-normalized-date';
 import { Logger } from '../lib/logger';
 import { parseInput } from '../lib/parse-input';
 import { getPhotoInfo, parseInfoDate } from '../lib/photo-info';
+import { parse } from '../parser/parse';
 import { delay } from '../utils/delay';
 import { AutoDatetime, ParserFunction, Result } from './core.types';
 import { input } from './input';
 import { meta } from './meta';
 import { navigate } from './navigate';
-import { parse } from './parsers';
 
 let stop = false;
 let running: Promise<void> | undefined;

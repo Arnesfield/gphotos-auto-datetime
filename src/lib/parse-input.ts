@@ -1,8 +1,8 @@
-import { parse } from '../core/parsers';
 import { NormalizedDate } from '../date/date.types';
 import { isNormalizedDate } from '../date/is-normalized-date';
 import { normalizeDate } from '../date/normalize-date';
 import { parseDate } from '../date/parse-date';
+import { parse } from '../parser/parse';
 import { getPhotoInfo, PhotoInfo } from './photo-info';
 
 export function parseInput(

@@ -1,10 +1,10 @@
 import { DRY_RUN } from '../constants';
 import { NormalizedDate } from '../date/date.types';
 import { isDateEqual } from '../date/is-date-equal';
-import { inputDate } from '../lib/input-date';
 import { Logger } from '../lib/logger';
 import { parseInfoDate, PhotoInfo } from '../lib/photo-info';
 import { delay } from '../utils/delay';
+import { inputDate } from './input-date';
 
 export interface InputResult {
   success?: boolean;

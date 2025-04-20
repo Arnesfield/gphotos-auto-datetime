@@ -1,9 +1,9 @@
 import { NormalizedDate } from '../date/date.types';
 import { normalizeDate } from '../date/normalize-date';
-import { dateParser } from '../parser/date-parser';
-import { defaultParser } from '../parser/default-parser';
-import { nautilusDateParser } from '../parser/nautilus-date-parser';
-import { Parser } from '../parser/parser.types';
+import { dateParser } from './date-parser';
+import { defaultParser } from './default-parser';
+import { nautilusDateParser } from './nautilus-date-parser';
+import { Parser } from './parser.types';
 
 const parsers: Parser[] = [defaultParser, nautilusDateParser, dateParser];
 
