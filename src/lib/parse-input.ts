@@ -6,7 +6,7 @@ import { parseDate } from '../date/parse-date';
 import { getPhotoInfo, PhotoInfo } from './photo-info';
 
 export function parseInput(
-  value: Date | NormalizedDate | string | undefined,
+  value: Date | NormalizedDate | string | unknown | undefined,
   info?: PhotoInfo
 ): NormalizedDate | undefined {
   if (value == null) {

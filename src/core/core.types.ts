@@ -10,15 +10,19 @@ export interface Meta {
   version: string;
 }
 
-export type ParserFunction = (name: string) => NormalizedDate | undefined;
+export type ParserFunction = (
+  name: string
+) => NormalizedDate | unknown | undefined;
 
 export interface AutoDatetime {
   meta: Meta;
   info(): { name: string; date: NormalizedDate | undefined } | undefined;
   next(): void;
   previous(): void;
-  parse(value?: string | Date | NormalizedDate): NormalizedDate | undefined;
-  input(value?: string | Date | NormalizedDate): Promise<void>;
+  parse(
+    value?: Date | NormalizedDate | string | unknown
+  ): NormalizedDate | undefined;
+  input(value?: Date | NormalizedDate | string | unknown): Promise<void>;
   start(parser?: ParserFunction): Promise<void>;
   stop(): Promise<void> | undefined;
   status(): void;

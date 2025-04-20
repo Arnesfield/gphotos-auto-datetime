@@ -1,46 +1,12 @@
-import { AmPm, NormalizedDate } from '../date/date.types';
+import { NormalizedDate } from '../date/date.types';
+import { normalizeDate } from '../date/normalize-date';
+import { parseDate } from '../date/parse-date';
 import { findVisibleElement } from '../utils/element';
-import { zeroPad } from '../utils/zero-pad';
-
-const dateTakenSelector = 'dd [aria-label^="Date taken:"]';
 
 export interface PhotoInfo {
   name: string;
   dlEl: HTMLDListElement;
   dateDetailsEl: HTMLElement;
-}
-
-export function parseInfoDate(info: PhotoInfo): NormalizedDate | undefined {
-  // always query elements to ensure updated values
-  const dateTakenEl = info.dlEl?.querySelector(dateTakenSelector);
-  const timeTakenEl = info.dlEl?.querySelector(
-    'dd [aria-label^="Time taken:"]'
-  );
-
-  /** Format: `MMM d[, yyyy]` */
-  const dateTaken = dateTakenEl?.textContent;
-  /** Format: `h:mm A` */
-  const timeTaken = timeTakenEl?.textContent;
-
-  if (!dateTaken || !timeTaken) return;
-
-  const dateString = dateTaken.includes(',')
-    ? dateTaken
-    : dateTaken + ', ' + new Date().getFullYear();
-
-  // clean whitespace
-  const time = timeTaken.replace(/\s/g, ' ').split(', ')[1];
-  const [mss, ampm] = time.split(' ') as [string, AmPm];
-
-  const date = new Date(dateString);
-  const year = date.getFullYear().toString();
-  const month = zeroPad(date.getMonth() + 1);
-  const day = zeroPad(date.getDate());
-
-  const [hourNoPadding, minute] = mss.split(':');
-  const hour = zeroPad(hourNoPadding);
-
-  return { year, month, day, hour, minute, second: '00', ampm };
 }
 
 export function getPhotoInfo(): PhotoInfo | undefined {
@@ -57,4 +23,32 @@ export function getPhotoInfo(): PhotoInfo | undefined {
   if (name && dlEl && dateDetailsEl) {
     return { name, dlEl, dateDetailsEl };
   }
+}
+
+export function parseInfoDate(info: PhotoInfo): NormalizedDate | undefined {
+  // always query elements to ensure updated values
+  const dateTakenEl = info.dlEl?.querySelector(
+    'dd [aria-label^="Date taken:"]'
+  );
+  const timeTakenEl = info.dlEl?.querySelector(
+    'dd [aria-label^="Time taken:"]'
+  );
+
+  /** Format: `MMM d[, yyyy]` */
+  const dateTaken = dateTakenEl?.textContent;
+  /** Format: `Mon|Today, h:mm A` */
+  const timeTaken = timeTakenEl?.textContent;
+
+  if (!dateTaken || !timeTaken) return;
+
+  // add missing year
+  const date = dateTaken.includes(',')
+    ? dateTaken
+    : dateTaken + ', ' + new Date().getFullYear();
+
+  // clean whitespace
+  const time = timeTaken.replace(/\s/g, ' ').split(', ')[1];
+
+  const parsed = parseDate(new Date(`${date} ${time}`));
+  return parsed && normalizeDate(parsed);
 }

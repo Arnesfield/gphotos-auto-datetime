@@ -25,13 +25,13 @@ export function normalizeDate(parsed: ParsedDate): NormalizedDate | undefined {
         : null;
   if (!parsedHour) return;
 
-  const { ampm } = parsedHour;
   const { year } = parsed;
   const month = zeroPad(parsed.month);
   const day = zeroPad(parsed.day);
   const hour = zeroPad(parsedHour.hour);
   const minute = zeroPad(parsed.minute);
   const second = zeroPad(parsed.second);
+  const ampm = parsedHour.ampm.toUpperCase() as AmPm;
 
   return { year, month, day, hour, minute, second, ampm };
 }
