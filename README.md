@@ -10,7 +10,8 @@ File name date formats that are recognized by this script:
 - `yyyy-MM-dd hh-mm-ss`
 - `yyyy-MM-dd_hh-mm-ss`
 - `d MMMM yyyy hh∶mm∶ss`
-- Any valid date string for the [`Date()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date) constructor
+
+Full file name strings that are valid date strings for the [`Date()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date) constructor are also recognized. This is probably not useful for real file names (since they may contain other information), but this can be helpful for `adt.parse(input)`.
 
 > [!CAUTION]
 >
