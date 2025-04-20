@@ -75,6 +75,7 @@ export async function input(
         info.name,
         parsedDate
       );
+      await delay(200, 400);
     }
   } else {
     logger.log(
