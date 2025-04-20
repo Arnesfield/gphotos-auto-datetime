@@ -1,5 +1,5 @@
 import { AmPm, NormalizedDate } from '../date/date.types';
-import { isElementVisible } from '../utils/is-element-visible';
+import { findVisibleElement } from '../utils/element';
 import { zeroPad } from '../utils/zero-pad';
 
 const dateTakenSelector = 'dd [aria-label^="Date taken:"]';
@@ -45,9 +45,7 @@ export function parseInfoDate(info: PhotoInfo): NormalizedDate | undefined {
 
 export function getPhotoInfo(): PhotoInfo | undefined {
   // get active 'dl' sidebar element
-  const dlEl = Array.from(document.querySelectorAll('dl')).find(
-    isElementVisible
-  );
+  const dlEl = findVisibleElement(document.querySelectorAll('dl'));
 
   // NOTE: next sibling of timeTakenEl is the time zone element
   const fileNameEl = dlEl?.querySelector('dd [aria-label^="Filename:"]');

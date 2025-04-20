@@ -1,5 +1,5 @@
 import { Logger } from '../lib/logger';
-import { isElementVisible } from '../utils/is-element-visible';
+import { findVisibleElement, isElementVisible } from '../utils/element';
 
 export function navigate(
   logger: Logger,
@@ -7,9 +7,9 @@ export function navigate(
 ): boolean | undefined {
   // get image content to get arrow buttons
   const label = `View ${type} photo`;
-  const photoContainerEl = Array.from(
+  const photoContainerEl = findVisibleElement(
     document.querySelectorAll('c-wiz[data-media-key]')
-  ).find(isElementVisible);
+  );
   const buttonDiv =
     photoContainerEl?.parentElement?.querySelector<HTMLDivElement>(
       `div[role=button][aria-label="${label}"]`
