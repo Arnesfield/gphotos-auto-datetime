@@ -7,7 +7,7 @@ import { delay } from '../utils/delay';
 import { AutoDatetime, ParserFunction, Result } from './core.types';
 import { input } from './input';
 import { meta } from './meta';
-import { next, previous } from './navigation';
+import { navigate } from './navigate';
 import { parse } from './parsers';
 
 let stop = false;
@@ -86,7 +86,7 @@ async function run() {
       continue;
     }
 
-    if (!next(logger)) break;
+    if (!navigate(logger, 'next')) break;
 
     nth++;
     attempts = 0;
@@ -122,11 +122,11 @@ export const instance: AutoDatetime = {
   },
   next() {
     if (running) return block();
-    next(LOG);
+    navigate(LOG, 'next');
   },
   previous() {
     if (running) return block();
-    previous(LOG);
+    navigate(LOG, 'previous');
   },
   parse(value) {
     return parseInput(value);
